@@ -46,12 +46,12 @@ public class GUI {
         gbc.gridy = 3;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         panel2.add(button1, gbc);
-        textPane1 = new JTextPane();
+        textField1 = new JTextField();
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.fill = GridBagConstraints.BOTH;
-        panel2.add(textPane1, gbc);
+        panel2.add(textField1, gbc);
         final JPanel panel3 = new JPanel();
         panel3.setLayout(new BorderLayout(0, 0));
         panel1.add(panel3, BorderLayout.CENTER);
