@@ -70,7 +70,7 @@ public class Map extends JPanel {
         super.paintComponent(g);
         Image board = null;
         try {
-            board = ImageIO.read(new File("gameboard.PNG"));
+            board = ImageIO.read(new File("src/gameboard.PNG"));
         } catch (IOException e) {
             e.printStackTrace();
         }

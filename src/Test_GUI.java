@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.IOException;
 
 //We will probably want to run the program from here and create a cluedo object in main
 public class Test_GUI extends JFrame {
@@ -34,9 +35,9 @@ public class Test_GUI extends JFrame {
         backgroundPanel.add(map);
 
         JPanel interactPanel = new JPanel();
-        interactPanel.setLayout(new BoxLayout(interactPanel,BoxLayout.LINE_AXIS));
+        interactPanel.setLayout(new BoxLayout(interactPanel,BoxLayout.X_AXIS));
 
-        JPanel buttons = createButtonPanel();
+        JPanel controlPanel = createControlPanel();
 //        gbc = new GridBagConstraints();
 //        //gbc.ipady = windowHeight/3;
 //        gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -45,7 +46,7 @@ public class Test_GUI extends JFrame {
 //        gbc.gridy = 2;
 //        //gbc.weightx = 1;
 //        //gbc.weighty = 1;
-        interactPanel.add(buttons);//,gbc);
+        interactPanel.add(controlPanel);//,gbc);
 
         JPanel text = createTextPanel();
 //        gbc = new GridBagConstraints();
@@ -74,11 +75,9 @@ public class Test_GUI extends JFrame {
 
     public static JMenuBar createMenuBar(){
         JMenuBar menuBar =  new JMenuBar();
-        JMenu menu =new JMenu("Menu");
-        JMenuItem i1=new JMenuItem("Item 1");
-        JMenuItem i2=new JMenuItem("Item 2");
-        JMenuItem i3=new JMenuItem("Item 3");
-        menu.add(i1); menu.add(i2); menu.add(i3);
+        JMenu menu =new JMenu("Game");
+        JMenuItem i1=new JMenuItem("Restart Game");
+        menu.add(i1);
         menuBar.add(menu);
         return menuBar;
     }
@@ -96,25 +95,65 @@ public class Test_GUI extends JFrame {
         return panel;
     }
 
-    public static JPanel createButtonPanel() {
+    public static JPanel createControlPanel() {
         JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setBackground(Color.blue);
         panel.setSize(windowWidth/2,windowHeight/3);
-        panel.setLayout(new GridLayout(2,2));
+      //  panel.setLayout(new GridLayout(2,2));
+        JPanel topPanel = createTopPanel();
+        panel.add(topPanel);
         panel.add(new JPanel());
-        panel.add(new JPanel());
-        JPanel dpad = createDPad();
-        dpad.setSize(windowWidth/4,windowHeight/6);
-        dpad.setBackground(Color.black);
-        panel.add(dpad);
+
+        JPanel bottomPanel = createBottomPanel();
+        panel.add(bottomPanel);
         return panel;
     }
 
-    public static JPanel createTextPanel() {
+    public static JPanel createTopPanel() {
+        JPanel panel = new JPanel();
+        //panel.setSize(windowWidth/4,windowHeight/6);
+        return panel;
+    }
+
+    public static JPanel createBottomPanel() {
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+
+        JPanel dpad = createDPad();
+        //dpad.setSize(windowWidth/8,windowHeight/6);
+       // dpad.setBackground(Color.black);
+        panel.add(dpad);
+
+        JPanel buttons = createButtonPanel();
+        panel.add(buttons);
+        return panel;
+    }
+
+    public static JPanel createButtonPanel() {
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+        panel.add(createDicePanel());
+        panel.add(new JButton("Accuse"));
+        JButton button = new JButton();
+        return panel;
+    }
+
+    public static JPanel createDicePanel() {
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.add(new JButton("Roll Dice"));
+        JLabel diceOutput = new JLabel("Dice output\n here");
+        panel.add(diceOutput);
+        return panel;
+    }
+
+
+    public static JPanel createTextPanel(){
         JPanel panel = new JPanel();
         panel.setSize(windowWidth/2,windowHeight/3);
         panel.setBackground(Color.red);
-        panel.setLayout(new GridLayout(2,2));
+        //panel.setLayout(new GridLayout(2,2));
         return panel;
     }
 
