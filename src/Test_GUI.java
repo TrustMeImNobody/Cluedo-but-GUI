@@ -9,7 +9,7 @@ public class Test_GUI extends JFrame {
     public final static int windowHeight = 800;
     public final static int windowWidth = 600;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         Test_GUI frame = new Test_GUI();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//update this at some point to open a dialog box
         JMenuBar bar = createMenuBar();
@@ -83,14 +83,16 @@ public class Test_GUI extends JFrame {
         return menuBar;
     }
 
-    public static JPanel createMapPanel() {
+     public static JPanel createMapPanel() throws IOException {
         JPanel panel = new JPanel();
         panel.setBackground(Color.black);
         panel.setSize(windowWidth,windowHeight*2/3);
-        Canvas c = new Canvas();
-        c.setBackground(Color.green);
-        c.setSize(windowWidth,windowHeight*2/3);
-        panel.add(c);
+        //Canvas c = new Canvas();
+        //Image board = ImageIO.read(new File("gameboard.PNG"));
+        //JLabel boardLabel = new JLabel(new ImageIcon(board));
+       //c.setBackground(Color.green);
+        //c.setSize(windowWidth,windowHeight*2/3);
+        panel.add(new Map());
         return panel;
     }
 
