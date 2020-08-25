@@ -13,7 +13,7 @@ import java.io.IOException;
 public class Map extends JPanel {
     public final static int windowHeight = 800;
     public final static int windowWidth = 600;
-    public final static int mapHeight =(int) ((int) windowHeight-windowHeight*0.45)+80;
+    public final static int mapHeight =(int) ((int) windowHeight-windowHeight*0.45)+50;
     RedSquare redSquare = new RedSquare();
 
     public Map() throws IOException {
@@ -75,7 +75,7 @@ public class Map extends JPanel {
             e.printStackTrace();
         }
         JLabel boardLabel = new JLabel(new ImageIcon(board));
-        g.drawImage(board, 0,0, windowWidth, mapHeight, null);
+        g.drawImage(board, 10,0, windowWidth-20, mapHeight, null);
 
         redSquare.paintSquare(g);
     }
