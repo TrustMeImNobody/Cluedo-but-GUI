@@ -21,46 +21,19 @@ public class Test_GUI extends JFrame {
 
         JPanel backgroundPanel = new JPanel();
 
-        //backgroundPanel.setLayout(new BoxLayout(backgroundPanel, BoxLayout.Y_AXIS));
         backgroundPanel.setLayout(new BoxLayout(backgroundPanel,BoxLayout.PAGE_AXIS));
-        //GridBagConstraints gbc = new GridBagConstraints();
 
         JPanel map = createMapPanel();
-//        gbc.gridwidth = 3;
-//        gbc.gridheight = 2;
-//        //gbc.ipady = windowHeight*2/3;
-//        gbc.fill = GridBagConstraints.BOTH;
-//        gbc.gridx = 0;
-//        gbc.gridy = 0;
-//        //gbc.weightx = 0;
-//        //gbc.weighty = 0.5;
-//        backgroundPanel.add(map,gbc);
         backgroundPanel.add(map);
 
         JPanel interactPanel = new JPanel();
         interactPanel.setLayout(new BoxLayout(interactPanel,BoxLayout.X_AXIS));
 
         JPanel controlPanel = createControlPanel();
-//        gbc = new GridBagConstraints();
-//        //gbc.ipady = windowHeight/3;
-//        gbc.fill = GridBagConstraints.HORIZONTAL;
-//        gbc.gridwidth = 1;
-//        gbc.gridx = 0;
-//        gbc.gridy = 2;
-//        //gbc.weightx = 1;
-//        //gbc.weighty = 1;
-        interactPanel.add(controlPanel);//,gbc);
+        interactPanel.add(controlPanel);
 
         JPanel text = createTextPanel();
-//        gbc = new GridBagConstraints();
-//        //gbc.ipady = windowHeight/3;
-//        gbc.fill = GridBagConstraints.HORIZONTAL;
-//        gbc.gridwidth = 1;
-//        gbc.gridx = 1;
-//        gbc.gridy = 2;
-//        //gbc.weightx = 1;
-//        //gbc.weighty = 1;
-        interactPanel.add(text);//,gbc);
+        interactPanel.add(text);
         backgroundPanel.add(interactPanel);
         frame.add(backgroundPanel);
 
@@ -137,6 +110,7 @@ public class Test_GUI extends JFrame {
         JPanel panel = new JPanel();
         //panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
         panel.setLayout(new GridLayout(2,1));
+        panel.setBorder(BorderFactory.createLineBorder(Color.BLACK,5));
         panel.add(createDicePanel());
         panel.add(createAccusePanel());
         //panel.add(suggest);
