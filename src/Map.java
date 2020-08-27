@@ -13,7 +13,7 @@ import java.io.IOException;
 public class Map extends JPanel {
     public final static int windowHeight = 800;
     public final static int windowWidth = 600;
-    public final static int mapHeight =(int) ((int) windowHeight-windowHeight*0.45)+50;
+    public final static int mapHeight =(int) ((int) windowHeight-windowHeight*0.45)+30;
     RedSquare redSquare = new RedSquare();
 
     public Map() throws IOException {
