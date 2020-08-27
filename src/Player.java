@@ -5,11 +5,12 @@ public class Player {
     Cell position;
     String character;
     String name;
-    public boolean accused=false;
+    Icon token;
 
     public Player(String character){
         this.character = character;
         this.hand = new ArrayList<Card>();
+        this.token = new Icon(character);
     }
 
     public void addCardToHand(Card c){
