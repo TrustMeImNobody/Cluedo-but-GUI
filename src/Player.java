@@ -4,6 +4,7 @@ public class Player {
     ArrayList<Card> hand;
     Cell position;
     String character;
+    String name;
     public boolean accused=false;
 
     public Player(String character){

@@ -372,6 +372,10 @@ public class Cluedo {
         return false;
     }
 
+    public static int rollD6(){
+        return (int) (Math.random() * 6 + 1);
+    }
+
     /**
      * MOVE METHOD
      *
@@ -383,8 +387,8 @@ public class Cluedo {
      * @return boolean based on move success 
      */
     public boolean move(Player player) {
-        int dice1 = (int) (Math.random() * 6 + 1);
-        int dice2 = (int) (Math.random() * 6 + 1);
+        int dice1 = rollD6();
+        int dice2 = rollD6();
         int sum = dice1 + dice2;
         Boolean isInRoom = board.getPlayerRoom(player)!=null;
         System.out.println("You rolled " + sum);

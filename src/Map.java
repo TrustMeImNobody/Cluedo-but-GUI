@@ -18,8 +18,8 @@ public class Map extends JPanel {
 
     public Map() throws IOException {
 
-        setBorder(BorderFactory.createLineBorder(Color.black));
-
+        setBorder(BorderFactory.createLineBorder(Color.black,10));
+        setBackground(Color.black);
 
         addMouseListener(new MouseAdapter(){
             public void mousePressed(MouseEvent e){

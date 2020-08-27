@@ -6,6 +6,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
 
 //We will probably want to run the program from here and create a cluedo object in main
 public class Test_GUI extends JFrame {
@@ -16,6 +17,7 @@ public class Test_GUI extends JFrame {
     public static void main(String[] args) throws IOException {
         Test_GUI frame = new Test_GUI();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//update this at some point to open a dialog box
+        frame.setResizable(false);
         JMenuBar bar = createMenuBar();
         frame.setJMenuBar(bar);
 
@@ -74,35 +76,14 @@ public class Test_GUI extends JFrame {
     public static JPanel createControlPanel() {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.setBackground(Color.blue);
-        panel.setSize(windowWidth/2,windowHeight/3);
+        panel.setMaximumSize(new Dimension(windowWidth/2-5,windowHeight/3));
+        panel.setPreferredSize(new Dimension(windowWidth/2-5,windowHeight/3));
+        panel.setMinimumSize(new Dimension(windowWidth/2-5,windowHeight/3));
       //  panel.setLayout(new GridLayout(2,2));
-        JPanel topPanel = createTopPanel();
-        panel.add(topPanel);
-        panel.add(new JPanel());
-
-        JPanel bottomPanel = createBottomPanel();
-        panel.add(bottomPanel);
-        return panel;
-    }
-
-    public static JPanel createTopPanel() {
-        JPanel panel = new JPanel();
-        //panel.setSize(windowWidth/4,windowHeight/6);
-        return panel;
-    }
-
-    public static JPanel createBottomPanel() {
-        JPanel panel = new JPanel();
+        //panel.add(new JPanel());
         panel.setLayout(new GridLayout(2,1));
-
-        JPanel buttons = createButtonPanel();
-        panel.add(buttons);
-
-        JPanel dpad = createDPad();
-        //dpad.setSize(windowWidth/8,windowHeight/6);
-       // dpad.setBackground(Color.black);
-        panel.add(dpad);
+        panel.add(createButtonPanel());
+        panel.add(createDPad());
         return panel;
     }
 
@@ -116,12 +97,21 @@ public class Test_GUI extends JFrame {
         //panel.add(suggest);
         return panel;
     }
-
+    private static JLabel diceOutput;
     public static JPanel createDicePanel() {
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(2,1));
-        panel.add(new JButton("Roll Dice"));
-        JLabel diceOutput = new JLabel("Dice output\n here");
+        JButton roller = new JButton("Roll Dice");
+        roller.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                int d1 = Cluedo.rollD6();
+                int d2 = Cluedo.rollD6();
+                diceOutput.setText("Test "+ d1+" + "+d2+" = "+(d1+d2));
+            }
+        });
+        panel.add(roller);
+        diceOutput = new JLabel("Dice output\n here");
         panel.add(diceOutput);
         return panel;
     }
@@ -134,11 +124,9 @@ public class Test_GUI extends JFrame {
         accuse.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                System.out.println("Testing player display update");
                 updatePlayerDisplay(createTestPlayer());
             }
         });
-        JButton suggest = new JButton("Suggest");
         panel.add(accuse);
 
         return panel;
@@ -150,23 +138,26 @@ public class Test_GUI extends JFrame {
         JPanel panel = new JPanel();
         panel.setSize(windowWidth/2,windowHeight/3);
         //panel.setBackground(Color.red);
-        panel.setLayout(new BoxLayout(panel,BoxLayout.Y_AXIS));
+        panel.setLayout(new BorderLayout());
         displayPlayer = new JLabel();
         displayPlayer.setText("Player here");
-        panel.add(displayPlayer);
+        displayPlayer.setBorder(BorderFactory.createLineBorder(Color.black,5));
+        panel.add(displayPlayer,BorderLayout.PAGE_START);
         panel.add(createCardPanel());
+        panel.setMaximumSize(new Dimension(windowWidth/2-8,windowHeight/3));
+        panel.setPreferredSize(new Dimension(windowWidth/2-8,windowHeight/3));
+        panel.setMinimumSize(new Dimension(windowWidth/2-8,windowHeight/3));
         return panel;
     }
 
     public static void updatePlayerDisplay(Player p){
         if(p==null||p.hand==null){throw new Error("Player broke");}
-        displayPlayer.setText(p.character);
+        displayPlayer.setText(p.name+" "+p.character);
         for(JTextPane pane:displayHand){
-            pane.setText("");
+            pane.setText("Empty");
         }
         for(int i=0;i<p.hand.size();i++){
-            System.out.println(p.hand.get(i));
-            displayHand.get(i).setText(p.hand.get(i).name);
+            displayHand.get(i).setText(p.hand.get(i).type+"\n"+p.hand.get(i).name);
         }
     }
 
@@ -178,6 +169,7 @@ public class Test_GUI extends JFrame {
             displayHand.add(new JTextPane());
         }
         for(JTextPane p:displayHand){
+            p.setText("Empty");
             p.setBorder(BorderFactory.createLineBorder(Color.BLACK,5));
             panel.add(p);
         }
@@ -187,25 +179,26 @@ public class Test_GUI extends JFrame {
     public static JPanel createDPad(){
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(3,3));
-        JLabel up = new JLabel("_Up__");
-        //up.setSize(30,30);
-        //up.setHorizontalTextPosition(JLabel.CENTER);
-        JLabel left = new JLabel("Left_");
-        //left.setSize(30,30);
-        JLabel right = new JLabel("Right");
-        //right.setSize(30,30);
-        JLabel down = new JLabel("Down_");
-        //down.setSize(30,30);
+        JLabel up = new JLabel("Up",SwingConstants.CENTER);
+        up.setBorder(BorderFactory.createLineBorder(Color.BLACK,2));
+        JLabel left = new JLabel("Left",SwingConstants.CENTER);
+        left.setBorder(BorderFactory.createLineBorder(Color.BLACK,2));
+        JLabel right = new JLabel("Right",SwingConstants.CENTER);
+        right.setBorder(BorderFactory.createLineBorder(Color.BLACK,2));
+        JLabel down = new JLabel("Down",SwingConstants.CENTER);
+        down.setBorder(BorderFactory.createLineBorder(Color.BLACK,2));
 
-        panel.add(new JLabel("____"));
+        panel.add(new JLabel(""));
+        //up.setHorizontalTextPosition();
+
         panel.add(up);
-        panel.add(new JLabel("____"));
+        panel.add(new JLabel(""));
         panel.add(left);
-        panel.add(new JLabel("_____"));
+        panel.add(new JLabel(""));
         panel.add(right);
-        panel.add(new JLabel("____"));
+        panel.add(new JLabel(""));
         panel.add(down);
-        panel.add(new JLabel("____"));
+        panel.add(new JLabel(""));
 
         panel.addMouseListener(new MouseListener() {
             @Override
@@ -218,10 +211,10 @@ public class Test_GUI extends JFrame {
                     int x = mouseEvent.getX();
                     int y = mouseEvent.getY();
                     System.out.println("x:"+x+" y:"+y);
-                    if(y<25&&65<x&&x<105){System.out.println("DPAD UP");}
-                    if(x<30&&30<y&&y<45){System.out.println("DPAD LEFT");}
-                    if(130<x&&x<160&&30<y&&y<45){System.out.println("DPAD RIGHT");}
-                    if(y>55&&65<x&&x<105){System.out.println("DPAD DOWN");}
+                    if(y<45&&100<x&&x<195){System.out.println("DPAD UP");}
+                    if(x<98&&47<y&&y<86){System.out.println("DPAD LEFT");}
+                    if(195<x&&x<290&&47<y&&y<87){System.out.println("DPAD RIGHT");}
+                    if(y>88&&100<x&&x<195){System.out.println("DPAD DOWN");}
                     }
             @Override
             public void mouseEntered(MouseEvent mouseEvent) {}
@@ -235,8 +228,9 @@ public class Test_GUI extends JFrame {
 
     public static Player createTestPlayer(){
         Player test = new Player(Cluedo.characters.get(0));
-        test.addCardToHand(new Card(Card.Type.WEAPON,"card1"));
-        test.addCardToHand(new Card(Card.Type.ROOM,"card2"));
+        test.name = "Testing with a ridiculous name";
+        test.addCardToHand(new Card(Card.Type.WEAPON,Cluedo.weapons.get(0)));
+        test.addCardToHand(new Card(Card.Type.ROOM,Cluedo.rooms.get(3)));
         test.addCardToHand(new Card(Card.Type.CHARACTER,"card3"));
         test.addCardToHand(new Card(Card.Type.WEAPON,"card4"));
         test.addCardToHand(new Card(Card.Type.ROOM,"card5"));
