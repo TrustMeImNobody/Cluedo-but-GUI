@@ -1,3 +1,5 @@
+import javax.swing.*;
+import java.io.IOException;
 import java.util.*;
 
 public class Cluedo {
@@ -21,7 +23,7 @@ public class Cluedo {
     public ArrayList<Card> roomCards = new ArrayList<Card>();
     public ArrayList<Card> toDeal = new ArrayList<Card>();
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         Cluedo game = new Cluedo();
         game.gui = new Test_GUI(game);
         game.setUpPlayers();
@@ -186,12 +188,12 @@ public class Cluedo {
                 }
             }
             if (input.toLowerCase().equals("accuse")) {
-                if (accusation(player)) {
-                    return true;
-                } else {
-                    System.out.println("Your accusation was wrong, you are out\n ");
-                    player.accused = true;
-                }
+//                if (accusation(player)) {
+//                    return true;
+//                } else {
+//                    System.out.println("Your accusation was wrong, you are out\n ");
+//                    player.accused = true;
+//                }
                 break;
             }
             System.out.println("Your input wasn't recognised, please try again");
@@ -350,30 +352,30 @@ public class Cluedo {
      * Does not cycle through other players, and eliminates player if they
      * are wrong.
      *
-     * @param player player making the accusation
+     * @param dialog the dialog window to use
      *
      * @return boolean based on correctness of the accusation
      */
-    public boolean accusation(Player player) {
-        String suspect = getInputCard("suspect", "Miss Scarlett, Colonel Mustard, Mrs. White, Mr. Green,Mrs. Peacock, Professor Plum", characters);
-        String weapon = getInputCard("weapon", "Candlestick, Dagger, Lead Pipe, Revolver, Rope, Spanner", weapons);
-        String room = getInputCard("room", "Kitchen, Ballroom, Conservatory, Billiard Room, Library, Study, Hall, Lounge, Dining Room", rooms);
-        System.out.println("You're accusing " + suspect + " with the " + weapon + " in the " + room);
-        Card winWeapon = null;
-        Card winRoom = null;
-        Card winCharacter = null;
-        for (Card card : winningCards) {//sort out which card is which
-            if (card.type == Card.Type.WEAPON) {
-                winWeapon = card;
-            } else if (card.type == Card.Type.ROOM) {
-                winRoom = card;
-            } else {
-                winCharacter = card;
-            }
-        }
-        if (suspect.equals(winCharacter.name) && room.equals(winRoom.name) && weapon.equals(winWeapon.name)) {
-            return true;
-        }
+    public boolean accusation(Accuse_Dialog dialog) {
+        dialog = dialog.setContents(characters,"You are making an accusation. Please choose a suspect:");
+        System.out.println("1");
+        System.out.println(dialog.answer);
+//        System.out.println("You're accusing " + suspect + " with the " + weapon + " in the " + room);
+//        Card winWeapon = null;
+//        Card winRoom = null;
+//        Card winCharacter = null;
+//        for (Card card : winningCards) {//sort out which card is which
+//            if (card.type == Card.Type.WEAPON) {
+//                winWeapon = card;
+//            } else if (card.type == Card.Type.ROOM) {
+//                winRoom = card;
+//            } else {
+//                winCharacter = card;
+//            }
+//        }
+//        if (suspect.equals(winCharacter.name) && room.equals(winRoom.name) && weapon.equals(winWeapon.name)) {
+//            return true;
+//        }
         return false;
     }
 
