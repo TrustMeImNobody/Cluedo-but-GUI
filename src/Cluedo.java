@@ -6,6 +6,9 @@ public class Cluedo {
     private Board board;
     private Boolean gameOn = true;
     
+    public Player currentPlayer;
+    public Test_GUI gui;
+    
     //Array lists of character, weapon and room names
     public static final ArrayList<String> characters = new ArrayList<String>(Arrays.asList("Miss Scarlett", "Colonel Mustard", "Mrs. White", "Mr. Green", "Mrs. Peacock", "Professor Plum"));
     public static final ArrayList<String> weapons = new ArrayList<String>(Arrays.asList("Candlestick", "Dagger", "Lead Pipe", "Revolver", "Rope", "Spanner"));
@@ -20,6 +23,7 @@ public class Cluedo {
 
     public static void main(String[] args) {
         Cluedo game = new Cluedo();
+        game.gui = new Test_GUI(game);
         game.setUpPlayers();
         game.board = new Board(game.players);
         game.setUpCards();
@@ -151,6 +155,7 @@ public class Cluedo {
      * @return boolean based on if current player has completed the wining turn
      */
     public boolean doTurn(Player player) {
+        currentPlayer = player;
         board.displayBoard();
         System.out.println(player.character + " it is your turn!");
         ArrayList<Card> hand = player.getHand();
