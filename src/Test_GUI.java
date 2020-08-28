@@ -13,13 +13,15 @@ public class Test_GUI extends JFrame {
 
     public final static int windowHeight = 800;
     public final static int windowWidth = 600;
+    
+     public Cluedo game;
 
-    public static void main(String[] args) throws IOException {
-        Test_GUI frame = new Test_GUI();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//update this at some point to open a dialog box
-        frame.setResizable(false);
+    public Test_GUI(Cluedo g) throws IOException {
+        this.game = g;
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//update this at some point to open a dialog box
+        this.setResizable(false);
         JMenuBar bar = createMenuBar();
-        frame.setJMenuBar(bar);
+        this.setJMenuBar(bar);
 
         JPanel backgroundPanel = new JPanel();
 
@@ -37,11 +39,11 @@ public class Test_GUI extends JFrame {
         JPanel text = createTextPanel();
         interactPanel.add(text);
         backgroundPanel.add(interactPanel);
-        frame.add(backgroundPanel);
+        this.add(backgroundPanel);
 
-        frame.setVisible(true);
+        this.setVisible(true);
         //frame.pack();//Not necessary if we explicitly define the sizes
-        frame.setSize(windowWidth,windowHeight);
+        this.setSize(windowWidth,windowHeight);
 
         //frame.addWindowListener(new WindowAdapter() { //can probably adjust this code to open a dialog when the windo opens
         //				@Override
