@@ -8,6 +8,7 @@ public class Cluedo {
     
     public Player currentPlayer;
     public Test_GUI gui;
+    ArrayList<Icon> tokens = new ArrayList<Icon>();
     
     //Array lists of character, weapon and room names
     public static final ArrayList<String> characters = new ArrayList<String>(Arrays.asList("Miss Scarlett", "Colonel Mustard", "Mrs. White", "Mr. Green", "Mrs. Peacock", "Professor Plum"));
@@ -23,8 +24,8 @@ public class Cluedo {
 
     public static void main(String[] args) {
         Cluedo game = new Cluedo();
-        game.gui = new Test_GUI(game);
         game.setUpPlayers();
+        game.gui = new Test_GUI(game);
         game.board = new Board(game.players);
         game.setUpCards();
         game.runGame();
