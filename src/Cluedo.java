@@ -85,6 +85,9 @@ public class Cluedo {
             this.players.add(new Player(characters.get(i)));
             //Collections.reverse(this.players);
         }
+        for(Player t: players){
+            this.tokens.add(t.token);
+        }
     }
 
     /**
