@@ -54,7 +54,7 @@ public class Test_GUI extends JFrame {
         //			});
     }
 
-    public static JMenuBar createMenuBar() {
+    public JMenuBar createMenuBar() {
         JMenuBar menuBar = new JMenuBar();
         JMenu menu = new JMenu("Game");
         JMenuItem i1 = new JMenuItem("Restart Game");
@@ -62,8 +62,8 @@ public class Test_GUI extends JFrame {
         menuBar.add(menu);
         return menuBar;
     }
-
-   public JPanel createMapPanel() throws IOException {
+   
+  public JPanel createMapPanel() throws IOException {
         JPanel panel = new JPanel();
         panel.setBackground(Color.black);
         panel.setSize(windowWidth,458);
@@ -86,7 +86,7 @@ public class Test_GUI extends JFrame {
         return panel;
     }
 
-    public static JPanel createButtonPanel() {
+    public JPanel createButtonPanel() {
         JPanel panel = new JPanel();
         //panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
         panel.setLayout(new GridLayout(2, 1));
@@ -97,9 +97,9 @@ public class Test_GUI extends JFrame {
         return panel;
     }
 
-    private static JLabel diceOutput;
+    private JLabel diceOutput;
 
-    public static JPanel createDicePanel() {
+    public JPanel createDicePanel() {
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(2, 1));
         JButton roller = new JButton("Roll Dice");
@@ -117,7 +117,7 @@ public class Test_GUI extends JFrame {
         return panel;
     }
 
-    public static JPanel createAccusePanel() {
+    public JPanel createAccusePanel() {
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(2, 1));
         panel.add(new JLabel("     "));
@@ -126,35 +126,8 @@ public class Test_GUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 //updatePlayerDisplay(createTestPlayer());
-                class Accuse_Dialog extends JDialog {
-                    String answer = null;
-
-                    public Accuse_Dialog setContents(ArrayList<String> list, String string) {
-                        answer = null;
-                        Accuse_Dialog newPanel = new Accuse_Dialog();
-                        newPanel.setLayout(new BoxLayout(newPanel, BoxLayout.Y_AXIS));
-
-                        JLabel title = new JLabel(string);
-                        newPanel.add(title);
-
-                        ButtonGroup button = new ButtonGroup();//you don't actually add this to the panel for some reason
-                        for (String object : list) {
-                            JRadioButton rButton = new JRadioButton(object);
-                            rButton.addActionListener(new ActionListener() {
-                                @Override
-                                public void actionPerformed(ActionEvent actionEvent) {
-                                    answer = this.toString();
-                                }
-                            });
-                            button.add(rButton);
-                            newPanel.add(rButton);
-                        }
-
-                        newPanel.setResizable(false);
-                        newPanel.setVisible(true);
-                        return newPanel;
-                    }
-                }
+                Accuse_Dialog dialog = new Accuse_Dialog(game);
+                dialog.setContents(Cluedo.characters,"You are making an accusation. Please choose a suspect:");
 
             }
         });
@@ -163,10 +136,10 @@ public class Test_GUI extends JFrame {
         return panel;
     }
 
-    private static ArrayList<JTextPane> displayHand;
-    private static JLabel displayPlayer;
+    private ArrayList<JTextPane> displayHand;
+    private JLabel displayPlayer;
 
-    public static JPanel createTextPanel() {
+    public JPanel createTextPanel() {
         JPanel panel = new JPanel();
         panel.setSize(windowWidth / 2, windowHeight / 3);
         //panel.setBackground(Color.red);
@@ -182,7 +155,7 @@ public class Test_GUI extends JFrame {
         return panel;
     }
 
-    public static void updatePlayerDisplay(Player p) {
+    public void updatePlayerDisplay(Player p) {
         if (p == null || p.hand == null) {
             throw new Error("Player broke");
         }
@@ -195,7 +168,7 @@ public class Test_GUI extends JFrame {
         }
     }
 
-    public static JPanel createCardPanel() {
+    public JPanel createCardPanel() {
         displayHand = new ArrayList<>();
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(2, 3));
@@ -209,6 +182,7 @@ public class Test_GUI extends JFrame {
         }
         return panel;
     }
+
 
     public JPanel createDPad(){
         JPanel panel = new JPanel();
@@ -261,7 +235,7 @@ public class Test_GUI extends JFrame {
         return panel;
     }
 
-    public static Player createTestPlayer() {
+    public Player createTestPlayer() {
         Player test = new Player(Cluedo.characters.get(0));
         test.name = "Testing with a ridiculous name";
         test.addCardToHand(new Card(Card.Type.WEAPON, Cluedo.weapons.get(0)));
