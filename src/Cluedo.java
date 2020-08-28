@@ -14,6 +14,7 @@ public class Cluedo {
     
     public Player currentPlayer;
     public Test_GUI gui;
+    ArrayList<Icon> tokens = new ArrayList<Icon>();
     
     //Array lists of character, weapon and room names
     public static final ArrayList<String> characters = new ArrayList<String>(Arrays.asList("Miss Scarlett", "Colonel Mustard", "Mrs. White", "Mr. Green", "Mrs. Peacock", "Professor Plum"));
@@ -29,8 +30,8 @@ public class Cluedo {
 
     public static void main(String[] args) throws IOException {
         Cluedo game = new Cluedo();
-        game.gui = new Test_GUI(game);
         game.setUpPlayers();
+        game.gui = new Test_GUI(game);
         game.board = new Board(game.players);
         game.setUpCards();
         game.runGame();
@@ -77,6 +78,9 @@ public class Cluedo {
         for (int i = 0; i < num; i++) {
             this.players.add(new Player(characters.get(i)));
             //Collections.reverse(this.players);
+        }
+        for(Player t: players){
+            this.tokens.add(t.token);
         }
     }
 
@@ -150,7 +154,7 @@ public class Cluedo {
      */
     public boolean doTurn(Player player) {
         currentPlayer = player;
-        board.displayBoard();
+        //board.displayBoard();
         System.out.println(player.character + " it is your turn!");
         ArrayList<Card> hand = player.getHand();
         System.out.println("Your hand consists of:");
@@ -376,7 +380,7 @@ public class Cluedo {
         Boolean isInRoom = board.getPlayerRoom(player)!=null;
         System.out.println("You rolled " + sum);
         while (sum > 0) {
-            board.displayBoard();
+            //board.displayBoard();
             System.out.println("You can still move " + sum + " tiles.");
             System.out.println("Enter 'u' to move up, 'l' to move left, 'd' to move down or 'r' to move right");
             Scanner in = new Scanner(System.in);
@@ -385,7 +389,7 @@ public class Cluedo {
                 sum -= 1;
                 Room temp = board.getPlayerRoom(player);
                 if (temp != null  && !isInRoom) {
-                    board.displayBoard();
+                    //board.displayBoard();
                     System.out.println("You are in " + temp.name);
                     return true;
                 }
@@ -394,7 +398,7 @@ public class Cluedo {
             }
 
         }
-        board.displayBoard();
+        //board.displayBoard();
         System.out.println("You have finished your move.");
         return false;
     }

@@ -11,56 +11,15 @@ import java.io.File;
 import java.io.IOException;
 
 public class Map extends JPanel {
-    public final static int windowHeight = 800;
-    public final static int windowWidth = 600;
-    public final static int mapHeight =(int) ((int) windowHeight-windowHeight*0.45)+30;
-    RedSquare redSquare = new RedSquare();
 
-    public Map() throws IOException {
+    public final static int windowWidth = 485;
+    public final static int mapHeight = 458;
+    public Cluedo game;
 
-        setBorder(BorderFactory.createLineBorder(Color.black,10));
-        setBackground(Color.black);
-
-        addMouseListener(new MouseAdapter(){
-            public void mousePressed(MouseEvent e){
-                moveSquare(e.getX(),e.getY());
-            }
-        });
-
-        addMouseMotionListener(new MouseAdapter(){
-            public void mouseDragged(MouseEvent e){
-                moveSquare(e.getX(),e.getY());
-            }
-        });
-
+    public Map(Cluedo g) throws IOException {
+        this.game = g;
     }
 
-    private void moveSquare(int x, int y){
-
-        // Current square state, stored as final variables
-        // to avoid repeat invocations of the same methods.
-        final int CURR_X = redSquare.getX();
-        final int CURR_Y = redSquare.getY();
-        final int CURR_W = redSquare.getWidth();
-        final int CURR_H = redSquare.getHeight();
-        final int OFFSET = 1;
-
-        if ((CURR_X!=x) || (CURR_Y!=y)) {
-
-            // The square is moving, repaint background
-            // over the old square location.
-            repaint(CURR_X,CURR_Y,CURR_W+OFFSET,CURR_H+OFFSET);
-
-            // Update coordinates.
-            redSquare.setX(x);
-            redSquare.setY(y);
-
-            // Repaint the square at the new location.
-            repaint(redSquare.getX(), redSquare.getY(),
-                    redSquare.getWidth()+OFFSET,
-                    redSquare.getHeight()+OFFSET);
-        }
-    }
 
     public Dimension getPreferredSize() {
         return new Dimension(windowWidth, mapHeight);
@@ -75,47 +34,18 @@ public class Map extends JPanel {
             e.printStackTrace();
         }
         JLabel boardLabel = new JLabel(new ImageIcon(board));
-        g.drawImage(board, 10,0, windowWidth-20, mapHeight, null);
+        g.drawImage(board, 0,0, windowWidth, mapHeight, null);
 
-        redSquare.paintSquare(g);
-    }
-}
-
-class RedSquare{
-
-    private int xPos = 50;
-    private int yPos = 50;
-    private int width = 20;
-    private int height = 20;
-
-    public void setX(int xPos){
-        this.xPos = xPos;
+        for(Icon t: game.tokens){
+            paintToken(g, t);
+        }
     }
 
-    public int getX(){
-        return xPos;
-    }
-
-    public void setY(int yPos){
-        this.yPos = yPos;
-    }
-
-    public int getY(){
-        return yPos;
-    }
-
-    public int getWidth(){
-        return width;
-    }
-
-    public int getHeight(){
-        return height;
-    }
-
-    public void paintSquare(Graphics g){
-        g.setColor(Color.RED);
-        g.fillRect(xPos,yPos,width,height);
+    public void paintToken(Graphics g, Icon t){
+        g.setColor(t.color);
+        g.fillRect(t.xPos,t.yPos,t.width,t.height);
         g.setColor(Color.BLACK);
-        g.drawRect(xPos,yPos,width,height);
+        g.drawRect(t.xPos,t.yPos,t.width,t.height);
+        g.drawString(t.text, t.xPos + t.width/4, (int) (t.yPos + t.height*0.75));
     }
 }
