@@ -6,6 +6,7 @@ public class Player {
     String character;
     String name;
     Icon token;
+    boolean accused = false;
 
     public Player(String character){
         this.character = character;
