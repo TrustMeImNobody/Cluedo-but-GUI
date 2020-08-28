@@ -352,9 +352,8 @@ public class Cluedo {
      */
     public boolean accusation(String suspect, String weapon, String room) {
         System.out.println("You're accusing " + suspect + " with the " + weapon + " in the " + room);
-        System.out.println("TEST You're accusing " + winSus.name + " with the " + winWeapon.name + " in the " + winRoom.name);
         if (suspect.equals(winSus.name) && room.equals(winRoom.name) && weapon.equals(winWeapon.name)) {
-            return true;
+            return true;//do win shit - spawn a window and close the game
         }
         return false;
     }
