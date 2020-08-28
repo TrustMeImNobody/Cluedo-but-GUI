@@ -4,8 +4,8 @@ public class Icon {
 
     int xPos;
     int yPos;
-    int width = 20;
-    int height = 20;
+    int width = 15;
+    int height = 15;
     String text;
     Color color;
 
@@ -13,38 +13,38 @@ public class Icon {
         switch(text){
             //Character Icon and start Position Setup
             case "Colonel Mustard":
-                this.xPos = 32;
-                this.yPos = 324;
+                this.xPos = 15;
+                this.yPos = 309; //324
                 this.color = Color.orange;
                 this.text = "M";
                 break;
             case "Miss Scarlett":
-                this.xPos = 195;
-                this.yPos = 452;
+                this.xPos = 149; //195
+                this.yPos = 435; //452
                 this.color = Color.red;
                 this.text = "S";
                 break;
             case "Mrs. White":
-                this.xPos = 241;
-                this.yPos = 16;
+                this.xPos = 186; //241
+                this.yPos = 10; //16
                 this.color = Color.white;
                 this.text = "W";
                 break;
             case "Mr. Green":
-                this.xPos = 357;
-                this.yPos = 16;
+                this.xPos = 280; //357
+                this.yPos = 10; //16
                 this.color = Color.green;
                 this.text = "G";
                 break;
             case "Mrs. Peacock":
-                this.xPos = 566;
-                this.yPos = 124;
+                this.xPos = 446; //566
+                this.yPos = 115; //124
                 this.color = Color.blue;
                 this.text = "Pe";
                 break;
             case "Professor Plum":
-                this.xPos = 566;
-                this.yPos = 360;
+                this.xPos = 446; //566
+                this.yPos = 345; //360
                 this.color = Color.PINK;
                 this.text = "Pl";
                 break;
