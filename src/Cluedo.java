@@ -3,7 +3,11 @@ import java.io.IOException;
 import java.util.*;
 
 public class Cluedo {
-    public Set<Card> winningCards = new HashSet<Card>();
+    public Card winSus;
+    public Card winWeapon;
+    public Card winRoom;
+
+   // public Set<Card> winningCards = new HashSet<Card>();
     public ArrayList<Player> players = new ArrayList<Player>();
     private Board board;
     private Boolean gameOn = true;
@@ -41,20 +45,8 @@ public class Cluedo {
                 }
                 playerGone = true;
                 if (doTurn(player)) {//doTurn returns true if the player won so this handles the winning bit
-                    Card weapon = null;
-                    Card room = null;
-                    Card character = null;
-                    for (Card card : winningCards) {//sort out which card is which
-                        if (card.type == Card.Type.WEAPON) {
-                            weapon = card;
-                        } else if (card.type == Card.Type.ROOM) {
-                            room = card;
-                        } else {
-                            character = card;
-                        }
-                    }
                     System.out.println(player.character + " wins!");
-                    System.out.println("They worked out that the murderer was " + character.name + " in the " + room.name + " with the " + weapon.name);
+                    System.out.println("They worked out that the murderer was " + winSus.name + " in the " + winRoom.name + " with the " + winWeapon.name);
                     gameOn = false;
                     break; //break the for loop when someone wins
                 }
@@ -117,9 +109,9 @@ public class Cluedo {
         Collections.shuffle(weaponCards);
         Collections.shuffle(roomCards);
         
-        winningCards.add(characterCards.get(0));
-        winningCards.add(weaponCards.get(0));
-        winningCards.add(roomCards.get(0));
+        winSus=characterCards.get(0);
+        winWeapon=weaponCards.get(0);
+        winRoom=roomCards.get(0);
 
         //Remove winning cards from deal cards 
         toDeal.remove(characterCards.get(0));
@@ -356,19 +348,8 @@ public class Cluedo {
      */
     public boolean accusation(String suspect, String weapon, String room) {
         System.out.println("You're accusing " + suspect + " with the " + weapon + " in the " + room);
-        Card winWeapon = null;
-        Card winRoom = null;
-        Card winCharacter = null;
-        for (Card card : winningCards) {//sort out which card is which
-            if (card.type == Card.Type.WEAPON) {
-                winWeapon = card;
-            } else if (card.type == Card.Type.ROOM) {
-                winRoom = card;
-            } else {
-                winCharacter = card;
-            }
-        }
-        if (suspect.equals(winCharacter.name) && room.equals(winRoom.name) && weapon.equals(winWeapon.name)) {
+        System.out.println("TEST You're accusing " + winSus.name + " with the " + winWeapon.name + " in the " + winRoom.name);
+        if (suspect.equals(winSus.name) && room.equals(winRoom.name) && weapon.equals(winWeapon.name)) {
             return true;
         }
         return false;

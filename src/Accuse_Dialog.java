@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 class Accuse_Dialog extends JDialog {
-    String suspect = null;
-    String weapon = null;
-    String location = null;
+    String suspect = "";
+    String weapon = "";
+    String location = "";
     public Cluedo game;
 
     public static final ArrayList<String> weapons = new ArrayList<String>(Arrays.asList("Candlestick", "Dagger", "Lead Pipe", "Revolver", "Rope", "Spanner"));
@@ -17,10 +17,10 @@ class Accuse_Dialog extends JDialog {
         this.game=game;
     }
 
-    public Accuse_Dialog setContents(ArrayList<String> list, String string) {
-        Accuse_Dialog newPanel = new Accuse_Dialog(game);
-        newPanel.getContentPane().setLayout(new BoxLayout(newPanel.getContentPane(), BoxLayout.Y_AXIS));
-
+    public void setContents(ArrayList<String> list, String string) {//maybe try updating the content panel? or making a new constructor to pass stuff along
+        JPanel newPanel = new JPanel();
+        newPanel.setLayout(new BoxLayout(newPanel, BoxLayout.Y_AXIS));
+        Accuse_Dialog dialog = this;
         JLabel title = new JLabel(string);
         newPanel.add(title);
 
@@ -30,17 +30,18 @@ class Accuse_Dialog extends JDialog {
             rButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent actionEvent) {
-                    if (suspect == null){
+                    if (suspect.equals("")){
                         suspect=rButton.getText();
-                        newPanel.setContents(weapons, "Please choose a weapon");
+                        dialog.setContents(weapons, "Please choose a weapon");
                     }
-                    else if(weapon == null){
+                    else if(weapon.equals("")){
                         System.out.println("1");
                         weapon=rButton.getText();
-                        newPanel.setContents(rooms, "Please choose a room");
+                        dialog.setContents(rooms, "Please choose a room");
                     }
-                    else if(location == null){
+                    else if(location.equals("")){
                         location=rButton.getText();
+                        dialog.setVisible(false);
                         game.accusation(suspect,weapon,location);
                     }
                 }
@@ -50,8 +51,10 @@ class Accuse_Dialog extends JDialog {
         }
 
         newPanel.setVisible(true);
-        newPanel.pack();
-        this.setVisible(false);
-        return newPanel;
+        this.setContentPane(newPanel);
+        this.setVisible(true);
+        this.pack();
+
+        //this.setVisible(false);
     }
 }
