@@ -352,30 +352,25 @@ public class Cluedo {
      * Does not cycle through other players, and eliminates player if they
      * are wrong.
      *
-     * @param dialog the dialog window to use
-     *
      * @return boolean based on correctness of the accusation
      */
-    public boolean accusation(Accuse_Dialog dialog) {
-        dialog = dialog.setContents(characters,"You are making an accusation. Please choose a suspect:");
-        System.out.println("1");
-        System.out.println(dialog.answer);
-//        System.out.println("You're accusing " + suspect + " with the " + weapon + " in the " + room);
-//        Card winWeapon = null;
-//        Card winRoom = null;
-//        Card winCharacter = null;
-//        for (Card card : winningCards) {//sort out which card is which
-//            if (card.type == Card.Type.WEAPON) {
-//                winWeapon = card;
-//            } else if (card.type == Card.Type.ROOM) {
-//                winRoom = card;
-//            } else {
-//                winCharacter = card;
-//            }
-//        }
-//        if (suspect.equals(winCharacter.name) && room.equals(winRoom.name) && weapon.equals(winWeapon.name)) {
-//            return true;
-//        }
+    public boolean accusation(String suspect, String weapon, String room) {
+        System.out.println("You're accusing " + suspect + " with the " + weapon + " in the " + room);
+        Card winWeapon = null;
+        Card winRoom = null;
+        Card winCharacter = null;
+        for (Card card : winningCards) {//sort out which card is which
+            if (card.type == Card.Type.WEAPON) {
+                winWeapon = card;
+            } else if (card.type == Card.Type.ROOM) {
+                winRoom = card;
+            } else {
+                winCharacter = card;
+            }
+        }
+        if (suspect.equals(winCharacter.name) && room.equals(winRoom.name) && weapon.equals(winWeapon.name)) {
+            return true;
+        }
         return false;
     }
 

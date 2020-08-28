@@ -129,7 +129,7 @@ public class Test_GUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 //updatePlayerDisplay(createTestPlayer());
-                Accuse_Dialog dialog = new Accuse_Dialog();
+                Accuse_Dialog dialog = new Accuse_Dialog(game);
                 dialog.setContents(Cluedo.characters,"You are making an accusation. Please choose a suspect:");
 
             }
