@@ -63,22 +63,30 @@ public class Cluedo {
      * This method sets up the players
      */
     public void setUpPlayers() {
-        int num;
-        while (true) {
-            System.out.println("How many players do you want in this game?");
-            System.out.println("You can have between 3 and 6 players.");
-            Scanner in = new Scanner(System.in);
-            num = in.nextInt();
-            if (num >= 3 && num <= 6) {
-                break;
-            } else {
-                System.out.println("Please choose between 3 and 6 players.");
-            }
+//        int num;
+//        while (true) {
+//            System.out.println("How many players do you want in this game?");
+//            System.out.println("You can have between 3 and 6 players.");
+//            Scanner in = new Scanner(System.in);
+//            num = in.nextInt();
+//            if (num >= 3 && num <= 6) {
+//                break;
+//            } else {
+//                System.out.println("Please choose between 3 and 6 players.");
+//            }
+//        }
+//        for (int i = 0; i < num; i++) {
+//            this.players.add(new Player(characters.get(i),"test"));
+//            //Collections.reverse(this.players);
+//        }
+        Player_Select_UI start = new Player_Select_UI(this);
+        start.setUp();
+        players = start.getPlayers();
+
+        for(Player p:players){
+            System.out.println(p.name+" as "+p.character);
         }
-        for (int i = 0; i < num; i++) {
-            this.players.add(new Player(characters.get(i)));
-            //Collections.reverse(this.players);
-        }
+
         for(Player t: players){
             this.tokens.add(t.token);
         }
@@ -155,12 +163,13 @@ public class Cluedo {
     public boolean doTurn(Player player) {
         currentPlayer = player;
         //board.displayBoard();
-        System.out.println(player.character + " it is your turn!");
+        //System.out.println(player.character + " it is your turn!");
         ArrayList<Card> hand = player.getHand();
-        System.out.println("Your hand consists of:");
-        for (Card card : hand) {
-            System.out.println(card);
-        }
+        gui.updatePlayerDisplay(player);
+        //System.out.println("Your hand consists of:");
+//        for (Card card : hand) {
+//            System.out.println(card);
+//        }
         if (board.getPlayerRoom(player) != null) {
             System.out.println("You are in the " + board.getPlayerRoom(player).name);
         } else {

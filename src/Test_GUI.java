@@ -159,7 +159,7 @@ public class Test_GUI extends JFrame {
         if (p == null || p.hand == null) {
             throw new Error("Player broke");
         }
-        displayPlayer.setText(p.name + " " + p.character);
+        displayPlayer.setText(p.name + " as " + p.character);
         for (JTextPane pane : displayHand) {
             pane.setText("Empty");
         }
@@ -215,10 +215,9 @@ public class Test_GUI extends JFrame {
             public void mousePressed(MouseEvent mouseEvent) {}
             @Override
             public void mouseReleased(MouseEvent mouseEvent) {
-                //todo adjust parameters for buttons once layout is sorted
                     int x = mouseEvent.getX();
                     int y = mouseEvent.getY();
-                    System.out.println("x:"+x+" y:"+y);
+                    //System.out.println("x:"+x+" y:"+y);
                     if(y<45&&100<x&&x<195){game.currentPlayer.token.move(0,-20);}
                     if(x<98&&47<y&&y<86){game.currentPlayer.token.move(-20,0);}
                     if(195<x&&x<290&&47<y&&y<87){game.currentPlayer.token.move(20,0);}
@@ -236,7 +235,7 @@ public class Test_GUI extends JFrame {
     }
 
     public Player createTestPlayer() {
-        Player test = new Player(Cluedo.characters.get(0));
+        Player test = new Player(Cluedo.characters.get(0),"Test");
         test.name = "Testing with a ridiculous name";
         test.addCardToHand(new Card(Card.Type.WEAPON, Cluedo.weapons.get(0)));
         test.addCardToHand(new Card(Card.Type.ROOM, Cluedo.rooms.get(3)));

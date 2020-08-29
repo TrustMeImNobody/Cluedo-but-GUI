@@ -8,8 +8,9 @@ public class Player {
     Icon token;
     boolean accused = false;
 
-    public Player(String character){
+    public Player(String character, String name){
         this.character = character;
+        this.name = name;
         this.hand = new ArrayList<Card>();
         this.token = new Icon(character);
     }
