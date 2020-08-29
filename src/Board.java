@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 public class Board {
-    private ArrayList<ArrayList<Cell>> cells;
+    public ArrayList<ArrayList<Cell>> cells;
     private ArrayList<Player> players;
     private ArrayList<Room> rooms;
 
