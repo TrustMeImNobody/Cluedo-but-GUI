@@ -35,7 +35,6 @@ class Accuse_Dialog extends JDialog {
                         dialog.setContents(weapons, "Please choose a weapon");
                     }
                     else if(weapon.equals("")){
-                        System.out.println("1");
                         weapon=rButton.getText();
                         dialog.setContents(rooms, "Please choose a room");
                     }
