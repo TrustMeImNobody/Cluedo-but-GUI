@@ -1,19 +1,13 @@
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseMotionListener;
-import java.awt.event.MouseMotionAdapter;
-import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class Map extends JPanel {
 
-    public final static int windowWidth = 485;
-    public final static int mapHeight = 458;
+    public final static int windowWidth = 500;
+    public final static int mapHeight = 500;
     public Cluedo game;
 
     public Map(Cluedo g) throws IOException {
@@ -27,25 +21,39 @@ public class Map extends JPanel {
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        Image board = null;
-        try {
-            board = ImageIO.read(new File("src/gameboard.PNG"));
-        } catch (IOException e) {
-            e.printStackTrace();
+        setBackground(Color.BLACK);
+        ArrayList<ArrayList<Cell>> board = game.board.cells;
+        for(int row = 0; row < board.size(); row++){
+            for(int col = 0; col < board.get(row).size(); col++){
+                Cell current = board.get(row).get(col);
+                if(current.player != null){
+                    Player player = current.player;
+                    g.setColor(player.token.color);
+                } else if(current.type.equals("XXX")){
+                    g.setColor(Color.black);
+                } else if(current.type.equals("   ")){
+                    g.setColor(Color.lightGray);
+                } else {
+                    g.setColor(Color.black);
+                }
+                g.fillRect(30 + col * 18, row*18, 18, 18);
+                g.setColor(Color.BLACK);
+                g.drawRect(30 + col * 18, row*18, 18, 18);
+                g.setFont(g.getFont().deriveFont(10.0f));
+                g.drawString(current.weapon, 30 + col * 18, (row*18) + 10);
+            }
         }
-        JLabel boardLabel = new JLabel(new ImageIcon(board));
-        g.drawImage(board, 0,0, windowWidth, mapHeight, null);
+        g.setColor(Color.red);
+        g.setFont(g.getFont().deriveFont(12.0f));
+        g.drawString("Kitchen", 53, 66);
+        g.drawString("Ballroom", 228, 90);
+        g.drawString("Conservatory", 390, 66);
+        g.drawString("Billiard Room", 390, 198);
+        g.drawString("Library", 390, 306);
+        g.drawString("Study", 390, 432);
+        g.drawString("Hall", 223, 414);
+        g.drawString("Lounge", 53, 414);
+        g.drawString("Dining Room", 53, 230);
 
-        for(Icon t: game.tokens){
-            paintToken(g, t);
-        }
-    }
-
-    public void paintToken(Graphics g, Icon t){
-        g.setColor(t.color);
-        g.fillRect(t.xPos,t.yPos,t.width,t.height);
-        g.setColor(Color.BLACK);
-        g.drawRect(t.xPos,t.yPos,t.width,t.height);
-        g.drawString(t.text, t.xPos + t.width/4, (int) (t.yPos + t.height*0.75));
     }
 }
