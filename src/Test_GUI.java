@@ -223,18 +223,25 @@ public class Test_GUI extends JFrame {
                 int y = mouseEvent.getY();
                 //System.out.println("x:"+x+" y:"+y);
                 if (y < 45 && 100 < x && x < 195) {
-                    game.currentPlayer.token.move(0, -20);
+                    if(game.board.movePlayer(game.currentPlayer,'u')){
+                        map.repaint();
+                    }
                 }
                 if (x < 98 && 47 < y && y < 86) {
-                    game.currentPlayer.token.move(-20, 0);
+                    if(game.board.movePlayer(game.currentPlayer,'l')){
+                        map.repaint();
+                    }
                 }
                 if (195 < x && x < 290 && 47 < y && y < 87) {
-                    game.currentPlayer.token.move(20, 0);
+                    if(game.board.movePlayer(game.currentPlayer,'r')){
+                        map.repaint();
+                    }
                 }
                 if (y > 88 && 100 < x && x < 195) {
-                    game.currentPlayer.token.move(0, 20);
+                    if(game.board.movePlayer(game.currentPlayer,'d')){
+                        map.repaint();
+                    }
                 }
-                map.repaint();
             }
 
             @Override
