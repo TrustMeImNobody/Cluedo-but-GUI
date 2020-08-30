@@ -178,17 +178,14 @@ public class Board {
      */
     public void moveWeapon(String weapon, Room start){
         if(start.weapon != null && start.weapon.equals(weapon)){return;} //if the weapon is already here, do nothing
-        System.out.println("Starting for");
+        String temp = start.weapon;
         for(Room r:rooms){
             if(r.weapon.equals(weapon)){//Found weapon to be moved
-                System.out.println("found");
-                if(r.weapon != null){ //swap weapons if one is currently in this room
-                    r.weapon = start.weapon;
-                }
-                else{ //else remove the weapon from the other room
-                    r.weapon = null;
-                }
-                start.weapon = weapon; //move the weapon to this room
+                String temp2 = r.weapon;
+                r.deleteWeapon();
+                start.deleteWeapon();
+                r.addWeapon(temp);
+                start.addWeapon(temp2);
                 break;
             }
         }

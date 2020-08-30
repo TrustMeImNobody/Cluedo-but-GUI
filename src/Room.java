@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 public class Room {
     private ArrayList<Cell> cells;
-    public String weapon;
+    public String weapon = "";
 
     String name;
 
@@ -52,5 +52,11 @@ public class Room {
                 break;
         }
         this.weapon = weapon;
+    }
+
+    public void deleteWeapon(){
+        for(Cell c:cells){
+            c.weapon = "";
+        }
     }
 }
