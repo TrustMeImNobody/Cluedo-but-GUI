@@ -144,21 +144,20 @@ public class Test_GUI extends JFrame {
     public JPanel createDicePanel() {
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(2, 1));
-        JButton roller = new JButton("Roll Dice");
-        roller.setBorder(BorderFactory.createLineBorder(Color.black,1));
-        //Action listener for rolling the dice and displaying the roll. Also prevents the player from rerolling on their turn
-        roller.addActionListener(actionEvent -> {
-            if(game.diceRolled){
-                JOptionPane.showMessageDialog(null, "You've already rolled the dice");
-                return;
-            }
-            game.rollDice();
-            diceOutput.setText("You rolled " + game.dice1 + " and " + game.dice2 + " for a total of " + (game.dice1+game.dice2));
-        });
-        panel.add(roller);
         diceOutput = new JLabel("Roll the dice");
         panel.add(diceOutput);
+        JButton suggest = new JButton("Suggest");
+        suggest.setBorder(BorderFactory.createLineBorder(Color.black,1));
+        //Action listener for rolling the dice and displaying the roll. Also prevents the player from rerolling on their turn
+        suggest.addActionListener(actionEvent -> {
+//            
+        });
+        panel.add(suggest);
         return panel;
+    }
+
+    public void updateDiceOutput(int i){
+        diceOutput.setText("You rolled "+i);
     }
 
     /**
@@ -187,10 +186,8 @@ public class Test_GUI extends JFrame {
         endTurn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //game.endCurrentTurn();
                 game.diceRolled = false;
                 game.nextPlayer();
-                diceOutput.setText("Roll the dice");
             }
         });
         panel.add(endTurn);
