@@ -88,7 +88,7 @@ public class GUI extends JFrame {
         i1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                game.endGame();
+                game.endGame(true);
             }
         });
         menu.add(i1);
@@ -378,7 +378,8 @@ public class GUI extends JFrame {
     }
 
     public void createWinWindow(Player player, String suspect, String weapon, String room) {
-        JDialog dialog = new JDialog();
+        JDialog dialog = new JDialog(this,"You Win",true);
+        dialog.setSize(new Dimension(500,150));
         dialog.getContentPane().setLayout(new BoxLayout(dialog.getContentPane(), BoxLayout.PAGE_AXIS));
         JPanel panel = (JPanel) dialog.getContentPane();
         panel.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
@@ -388,7 +389,7 @@ public class GUI extends JFrame {
         topPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
         String string = player.character + " (" + player.name + ")" + " wins! They deduced that it was "
                 + suspect + " with the " + weapon + " in the " + room + ". Thank you for playing Cluedo!";
-        JLabel title = new JLabel(string);
+        JLabel title = new JLabel("<html><body><p style='width: 350px;'>"+string+"</p></body></html>");
         topPanel.add(title);
 
         panel.add(topPanel);
@@ -401,7 +402,7 @@ public class GUI extends JFrame {
         button1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                game.endGame();
+                game.endGame(false);
                 dialog.setVisible(false);
             }
         });
@@ -425,7 +426,8 @@ public class GUI extends JFrame {
     }
 
     public void createOutWindow(Player player, String suspect, String weapon, String room) {
-        JDialog dialog = new JDialog();
+        JDialog dialog = new JDialog(this,"You're Out",true);
+        dialog.setSize(new Dimension(500,150));
         dialog.getContentPane().setLayout(new BoxLayout(dialog.getContentPane(), BoxLayout.PAGE_AXIS));
         dialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
@@ -437,7 +439,7 @@ public class GUI extends JFrame {
         topPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
         String string = player.character + " (" + player.name + ")" + " is out! Their accusation that it it was "
                 + suspect + " with the " + weapon + " in the " + room + " was incorrect!";
-        JLabel title = new JLabel(string);
+        JLabel title = new JLabel("<html><body><p style='width: 350px;'>"+string+"</p></body></html>");
         topPanel.add(title);
 
         panel.add(topPanel);
@@ -466,7 +468,8 @@ public class GUI extends JFrame {
      * could probably be merged with createWinWindow
      */
     public void createLoseWindow() {
-        JDialog dialog = new JDialog();
+        JDialog dialog = new JDialog(this,"Game Over",true);
+        dialog.setSize(new Dimension(500,150));
         dialog.getContentPane().setLayout(new BoxLayout(dialog.getContentPane(), BoxLayout.PAGE_AXIS));
         JPanel panel = (JPanel) dialog.getContentPane();
         panel.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
@@ -488,7 +491,8 @@ public class GUI extends JFrame {
         button1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                //Do Carl's restart thing
+                game.endGame(false);
+                dialog.setVisible(false);
             }
         });
         bottomPanel.add(button1);
@@ -507,7 +511,6 @@ public class GUI extends JFrame {
         panel.add(bottomPanel);
 
         dialog.setVisible(true);
-        dialog.pack();
     }
 
     /**

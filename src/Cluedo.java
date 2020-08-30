@@ -63,10 +63,12 @@ public class Cluedo {
         winWeapon = null;
     }
 
-    public void endGame() {
-        Restart_UI restart = new Restart_UI();
-        if (!restart.restart()) {
-            return;
+    public void endGame(boolean menuTrigger) {
+        if(menuTrigger) {
+            Restart_UI restart = new Restart_UI();
+            if (!restart.restart()) {
+                return;
+            }
         }
         gui.restartClose = true;
         gui.dispatchEvent(new WindowEvent(gui, WindowEvent.WINDOW_CLOSING));
@@ -74,6 +76,10 @@ public class Cluedo {
     }
 
     public void nextPlayer() {
+        if(gameLost()){
+            gui.createLoseWindow();
+            return;
+        }
         int index = players.indexOf(currentPlayer);
         if (index == players.size() - 1) {
             currentPlayer = players.get(0);
@@ -89,6 +95,14 @@ public class Cluedo {
         rollDice();
     }
 
+    public boolean gameLost(){
+        for(Player p:players){
+            if(!p.accused){
+                return false;
+            }
+        }
+        return true;
+    }
 
     /**
      * This method sets up the players
