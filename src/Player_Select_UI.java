@@ -17,9 +17,9 @@ public class Player_Select_UI extends JDialog{
     }
 
     public ArrayList<Player> setUp(){
-        f = new JDialog(this,"Character Select",true);
-        f.setResizable(false);
+        f = new JDialog(this,"Character Select",true); //this one line of code stops everything until the dialog box closes
         f.setSize(400, 450);
+        f.setResizable(false); //don't let the window be resized so the scaling doesn't break
 
         main = new JPanel();
         main.setLayout(new BorderLayout());

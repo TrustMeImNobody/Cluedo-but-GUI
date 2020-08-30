@@ -4,66 +4,78 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Random;
 
-//We will probably want to run the program from here and create a cluedo object in main
 public class Test_GUI extends JFrame {
 
     public final static int windowHeight = 800;
     public final static int windowWidth = 700;
 
+    //fields to allow action listeners to update the GUI
+    private JLabel diceOutput;
+    private ArrayList<JTextPane> displayHand;
+    private JLabel displayPlayer;
+
     public Cluedo game;
     public Map map;
 
-    public Test_GUI(Cluedo g) throws IOException {
+    /**
+     * Constructor, creates the background frame and calls methods to build the rest of the GUI
+     * @param g
+     */
+    public Test_GUI(Cluedo g){
         this.game = g;
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//update this at some point to open a dialog box
-        this.setResizable(false);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//todo update this at some point to open a dialog box
+        this.setResizable(false); //don't let the window be resized so scaling can't break
+
+        //the menu bar, self explanatory
         JMenuBar bar = createMenuBar();
         this.setJMenuBar(bar);
 
+        //panel for displaying everything
         JPanel backgroundPanel = new JPanel();
-
         backgroundPanel.setLayout(new BoxLayout(backgroundPanel, BoxLayout.PAGE_AXIS));
 
+        //panel for displaying the game board
         JPanel map = createMapPanel();
         backgroundPanel.add(map);
 
+        //the panel that occupies the area below the map
         JPanel interactPanel = new JPanel();
         interactPanel.setLayout(new BoxLayout(interactPanel, BoxLayout.X_AXIS));
 
+        //the left half of the panel below the map
         JPanel controlPanel = createControlPanel();
         interactPanel.add(controlPanel);
 
+        //the right half of the panel below the map
         JPanel text = createTextPanel();
         interactPanel.add(text);
+
+        //display everything on the frame
         backgroundPanel.add(interactPanel);
         this.add(backgroundPanel);
-
         this.setVisible(true);
-        //frame.pack();//Not necessary if we explicitly define the sizes
         this.setSize(windowWidth, windowHeight);
-
-        //frame.addWindowListener(new WindowAdapter() { //can probably adjust this code to open a dialog when the windo opens
-        //				@Override
-        //				public void windowOpened(WindowEvent e) {
-        //					display.requestFocus();
-        //				}
-        //			});
     }
 
+    /**
+     * Creates the menu bar
+     */
     public JMenuBar createMenuBar() {
         JMenuBar menuBar = new JMenuBar();
         JMenu menu = new JMenu("Game");
         JMenuItem i1 = new JMenuItem("Restart Game");
+        //todo action listener on this
         menu.add(i1);
         menuBar.add(menu);
         return menuBar;
     }
 
-    public JPanel createMapPanel() throws IOException {
+    /**
+     * Creates the map by creating a new map object and adding it to a panel
+     */
+    public JPanel createMapPanel(){
         JPanel panel = new JPanel();
         panel.setBackground(Color.black);
         panel.setSize(windowWidth, 458);
@@ -72,48 +84,53 @@ public class Test_GUI extends JFrame {
         return panel;
     }
 
+    /**
+     * Creates the left half of the lower panel, stores all the interact elements of the GUI
+     * @return
+     */
     public JPanel createControlPanel() {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        //force the panels size so it takes up half the screen to prevent the layout manager deciding to ruin everything
         panel.setMaximumSize(new Dimension(windowWidth / 2 - 5, windowHeight / 3));
         panel.setPreferredSize(new Dimension(windowWidth / 2 - 5, windowHeight / 3));
         panel.setMinimumSize(new Dimension(windowWidth / 2 - 5, windowHeight / 3));
-        //  panel.setLayout(new GridLayout(2,2));
-        //panel.add(new JPanel());
         panel.setLayout(new GridLayout(2, 1));
         panel.add(createButtonPanel());
         panel.add(createDPad());
         return panel;
     }
 
+    /**
+     * Creates the panel that all the buttons will be added to
+     * @return
+     */
     public JPanel createButtonPanel() {
         JPanel panel = new JPanel();
-        //panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
         panel.setLayout(new GridLayout(2, 1));
         panel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
         panel.add(createDicePanel());
         panel.add(createAccusePanel());
-        //panel.add(suggest);
         return panel;
     }
 
-    private JLabel diceOutput;
-
+    /**
+     * Creates the panel that holds the button for rolling the dice and displaying the result of the dice roll
+     * Also shows how much movement the player has left
+     */
     public JPanel createDicePanel() {
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(2, 1));
         JButton roller = new JButton("Roll Dice");
         roller.setBorder(BorderFactory.createLineBorder(Color.black,1));
-        roller.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                if(game.diceRolled){
-                    JOptionPane.showMessageDialog(null, "You've already rolled the dice");
-                    return;
-                }
-                game.rollDice();
-                diceOutput.setText("You rolled " + game.dice1 + " and " + game.dice2 + " for a total of " + (game.dice1+game.dice2));
+        //Action listener for rolling the dice and displaying the roll. Also prevents the player from rerolling on their turn
+        roller.addActionListener(actionEvent -> {
+            if(game.diceRolled){
+                JOptionPane.showMessageDialog(null, "You've already rolled the dice");
+                return;
             }
+            game.rollDice();
+            diceOutput.setText("You rolled " + game.dice1 + " and " + game.dice2 + " for a total of " + (game.dice1+game.dice2));
         });
         panel.add(roller);
         diceOutput = new JLabel("Roll the dice");
@@ -121,15 +138,19 @@ public class Test_GUI extends JFrame {
         return panel;
     }
 
+    /**
+     * Creates the panel for the accuse and end turn buttons
+     * @return
+     */
     public JPanel createAccusePanel() {
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(2, 1));
         JButton accuse = new JButton("Accuse");
         accuse.setBorder(BorderFactory.createLineBorder(Color.black,1));
+        //Action listener to call the accuse UI to trigger
         accuse.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                //updatePlayerDisplay(createTestPlayer());
                 Accuse_Dialog dialog = new Accuse_Dialog(game);
                 dialog.setContents(Cluedo.characters, "You are making an accusation. Please choose a suspect:");
 
@@ -139,6 +160,7 @@ public class Test_GUI extends JFrame {
 
         JButton endTurn = new JButton("End Turn");
         endTurn.setBorder(BorderFactory.createLineBorder(Color.black,1));
+        //Action listener to end the players turn
         endTurn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -152,25 +174,31 @@ public class Test_GUI extends JFrame {
         return panel;
     }
 
-    private ArrayList<JTextPane> displayHand;
-    private JLabel displayPlayer;
-
+    /**
+     * Creates the bottom right panel of the GUI, can't be interacted with by the user
+     * Displays information about the current player and their hand
+     * @return
+     */
     public JPanel createTextPanel() {
         JPanel panel = new JPanel();
         panel.setSize(windowWidth / 2, windowHeight / 3);
-        //panel.setBackground(Color.red);
         panel.setLayout(new BorderLayout());
         displayPlayer = new JLabel();
         displayPlayer.setText("Player here");
         displayPlayer.setBorder(BorderFactory.createLineBorder(Color.black, 5));
         panel.add(displayPlayer, BorderLayout.PAGE_START);
         panel.add(createCardPanel());
+        //force the panels size so it takes up half the screen to prevent the layout manager deciding to ruin everything
         panel.setMaximumSize(new Dimension(windowWidth / 2 - 8, windowHeight / 3));
         panel.setPreferredSize(new Dimension(windowWidth / 2 - 8, windowHeight / 3));
         panel.setMinimumSize(new Dimension(windowWidth / 2 - 8, windowHeight / 3));
         return panel;
     }
 
+    /**
+     * Updates the bottom right panel of the GUI with the current player's information
+     * @param p
+     */
     public void updatePlayerDisplay(Player p) {
         if (p == null || p.hand == null) {
             throw new Error("Player broke");
@@ -184,6 +212,10 @@ public class Test_GUI extends JFrame {
         }
     }
 
+    /**
+     * Create the panel that will display the current players cards
+     * @return
+     */
     public JPanel createCardPanel() {
         displayHand = new ArrayList<>();
         JPanel panel = new JPanel();
@@ -199,7 +231,11 @@ public class Test_GUI extends JFrame {
         return panel;
     }
 
-
+    /**
+     * Creates the dpad on the bottom right of the screen
+     * The dpad uses a mouse listener to detect which direction the player wants to move in
+     * @return
+     */
     public JPanel createDPad() {
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(3, 3));
@@ -212,62 +248,60 @@ public class Test_GUI extends JFrame {
         JLabel down = new JLabel("Down", SwingConstants.CENTER);
         down.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
 
-        panel.add(new JLabel(""));
-        //up.setHorizontalTextPosition();
-
+        panel.add(new JLabel("")); //empty label for spacing
         panel.add(up);
-        panel.add(new JLabel(""));
+        panel.add(new JLabel("")); //empty label for spacing
         panel.add(left);
-        panel.add(new JLabel(""));
+        panel.add(new JLabel("")); //empty label for spacing
         panel.add(right);
-        panel.add(new JLabel(""));
+        panel.add(new JLabel("")); //empty label for spacing
         panel.add(down);
-        panel.add(new JLabel(""));
+        panel.add(new JLabel("")); //empty label for spacing
 
+        //the mouse listener that determines which of the labels the player has clicked
         panel.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent mouseEvent) {
+                //boilerplate code
             }
-
             @Override
             public void mousePressed(MouseEvent mouseEvent) {
+                //boilerplate code
             }
-
             @Override
             public void mouseReleased(MouseEvent mouseEvent) {
-                if(!game.diceRolled){
+                if(!game.diceRolled){  //if the players hasn't rolled the dice, tell them and don't let them move
                     JOptionPane.showMessageDialog(null, "Roll the dice");
                     return;
                 }
-                if(game.diceTotal<=0){
+                if(game.diceTotal<=0){ //if the player no longer has any movement, tell them and don't let them move
                     JOptionPane.showMessageDialog(null, "You have used up all of your movement");
                     return;
                 }
                 int x = mouseEvent.getX();
                 int y = mouseEvent.getY();
-                //System.out.println("x:"+x+" y:"+y);
-                if (y < 45 && 100 < x && x < 230) {
+                if (y < 45 && 100 < x && x < 230) {  //player clicked up label
                     if(game.board.movePlayer(game.currentPlayer,'u')){
                         game.diceTotal--;
                         diceOutput.setText("You have "+game.diceTotal+" movement remaining");
                         map.repaint();
                     }
                 }
-                if (x < 115 && 47 < y && y < 86) {
+                if (x < 115 && 47 < y && y < 86) { //player clicked left label
                     if(game.board.movePlayer(game.currentPlayer,'l')){
                         game.diceTotal--;
                         diceOutput.setText("You have "+game.diceTotal+" movement remaining");
                         map.repaint();
                     }
                 }
-                if (230 < x && x < 340 && 47 < y && y < 87) {
+                if (230 < x && x < 340 && 47 < y && y < 87) {  //player clicked right label
                     if(game.board.movePlayer(game.currentPlayer,'r')){
                         game.diceTotal--;
                         diceOutput.setText("You have "+game.diceTotal+" movement remaining");
                         map.repaint();
                     }
                 }
-                if (y > 88 && 100 < x && x < 230) {
+                if (y > 88 && 100 < x && x < 230) { //player clicked down label
                     if(game.board.movePlayer(game.currentPlayer,'d')){
                         game.diceTotal--;
                         diceOutput.setText("You have "+game.diceTotal+" movement remaining");
@@ -278,17 +312,22 @@ public class Test_GUI extends JFrame {
 
             @Override
             public void mouseEntered(MouseEvent mouseEvent) {
+                //boilerplate code
             }
 
             @Override
             public void mouseExited(MouseEvent mouseEvent) {
+                //boilerplate code
             }
         });
-        //panel.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
         panel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5, false));
         return panel;
     }
 
+    /**
+     * Method used for debugging player information display area
+     * @return
+     */
     public Player createTestPlayer() {
         Player test = new Player(Cluedo.characters.get(0), "Test");
         test.name = "Testing with a ridiculous name";

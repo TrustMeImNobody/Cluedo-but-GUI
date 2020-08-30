@@ -10,7 +10,7 @@ public class Map extends JPanel {
     public final static int mapHeight = 500;
     public Cluedo game;
 
-    public Map(Cluedo g) throws IOException {
+    public Map(Cluedo g){
         this.game = g;
     }
 

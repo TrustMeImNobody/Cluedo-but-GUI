@@ -1,5 +1,4 @@
 import javax.swing.*;
-import java.io.IOException;
 import java.util.*;
 
 public class Cluedo {
@@ -28,7 +27,7 @@ public class Cluedo {
     public ArrayList<Card> roomCards = new ArrayList<Card>();
     public ArrayList<Card> toDeal = new ArrayList<Card>();
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args){
         Cluedo game = new Cluedo();
         game.setUpPlayers();
         game.gui = new Test_GUI(game);
