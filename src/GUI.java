@@ -535,7 +535,38 @@ public class GUI extends JFrame {
 
     public void createNoRefutePanel(){
         JDialog dialog = new JDialog();
-        
+        JPanel panel = (JPanel) dialog.getContentPane();
+        panel.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
+        panel.setLayout(new BoxLayout(dialog.getContentPane(), BoxLayout.PAGE_AXIS));
+
+        JPanel topPanel = new JPanel();
+        topPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        dialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        JLabel title = new JLabel("No other player has any cards that refute your suggestion.");
+        topPanel.add(title);
+        panel.add(topPanel);
+
+        panel.add(Box.createRigidArea(new Dimension(0, 10)));
+
+        JPanel bottomPanel = new JPanel();
+        bottomPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        JButton button1 = new JButton("Continue");
+        button1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                dialog.dispose();
+            }
+        });
+        bottomPanel.add(button1);
+
+        panel.add(bottomPanel);
+
+        dialog.pack();
+        dialog.setVisible(true);
+
     }
 }
 

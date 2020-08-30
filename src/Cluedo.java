@@ -179,15 +179,18 @@ public class Cluedo {
                 }
                 if (!refutingCards.isEmpty()) {
                     if (refutingCards.size() == 1) {
+                        System.out.println("3");
                         gui.createRefutePanel(s,refutingCards.get(0));
                         return;
                     } else {
+                        System.out.println("2");
                         gui.createSelectRefutePanel(s);
                         return;
                     }
                 }
             }
         }
+        System.out.println("1");
         gui.createNoRefutePanel();
     }
 
