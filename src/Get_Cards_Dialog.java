@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ class Get_Cards_Dialog extends JDialog {
     String suspect = "";
     String weapon = "";
     String location = "";
+    private JDialog f;
     public Cluedo game;
 
     public static final ArrayList<String> weapons = new ArrayList<String>(Arrays.asList("Candlestick", "Dagger", "Lead Pipe", "Revolver", "Rope", "Spanner"));
@@ -27,9 +29,11 @@ class Get_Cards_Dialog extends JDialog {
      * @param accuse if this is being used to get the cards for accusing or for suggesting
      */
     public void setContents(ArrayList<String> list, String string, boolean accuse) {
+        f = new JDialog(this,"Choose Suspects",true);
+        f.setSize(new Dimension(400,300));
+        f.setResizable(false);
         JPanel newPanel = new JPanel();
         newPanel.setLayout(new BoxLayout(newPanel, BoxLayout.Y_AXIS));
-        Get_Cards_Dialog dialog = this;
         JLabel title = new JLabel(string);
         newPanel.add(title);
 
@@ -41,18 +45,18 @@ class Get_Cards_Dialog extends JDialog {
                 public void actionPerformed(ActionEvent actionEvent) {
                     if (suspect.equals("")) {
                         suspect = rButton.getText();
-                        dialog.setContents(weapons, "Please choose a weapon", accuse);
+                        setContents(weapons, "Please choose a weapon", accuse);
                     } else if (weapon.equals("")) {
                         weapon = rButton.getText();
                         if (accuse) {
-                            dialog.setContents(rooms, "Please choose a room", accuse);
+                            setContents(rooms, "Please choose a room", accuse);
                         } else {
-                            dialog.setVisible(false);
+                            setVisible(false);
                             game.suggestion(suspect, weapon);
                         }
                     } else if (location.equals("")) {
                         location = rButton.getText();
-                        dialog.setVisible(false);
+                        setVisible(false);
                         game.accusation(suspect, weapon, location);
                     }
                 }
@@ -61,10 +65,9 @@ class Get_Cards_Dialog extends JDialog {
             newPanel.add(rButton);
         }
 
-        newPanel.setVisible(true);
-        this.setContentPane(newPanel);
-        this.setVisible(true);
-        this.pack();
+        f.setContentPane(newPanel);
+        f.setVisible(true);
+        f.pack();
 
         //this.setVisible(false);
     }

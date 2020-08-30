@@ -151,7 +151,7 @@ public class GUI extends JFrame {
         suggest.setBorder(BorderFactory.createLineBorder(Color.black,1));
         //Action listener for rolling the dice and displaying the roll. Also prevents the player from rerolling on their turn
         suggest.addActionListener(actionEvent -> {
-//            
+            createSuggestionDialog();
         });
         suggest.setEnabled(false);
         panel.add(suggest);
