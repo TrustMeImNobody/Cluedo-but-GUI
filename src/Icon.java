@@ -29,7 +29,7 @@ public class Icon {
                 this.text = "Pe";
                 break;
             case "Professor Plum":
-                this.color = Color.PINK;
+                this.color = new Color(200,0,200);
                 this.text = "Pl";
                 break;
         }

@@ -120,7 +120,15 @@ public class Test_GUI extends JFrame {
     public JPanel createAccusePanel() {
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(2, 1));
-        panel.add(new JLabel("     "));
+        JButton endTurn = new JButton("End Turn");
+        endTurn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //game.endCurrentTurn();
+                //todo right the method to end the current turn
+            }
+        });
+        panel.add(endTurn);
         JButton accuse = new JButton("Accuse");
         accuse.addActionListener(new ActionListener() {
             @Override
@@ -222,22 +230,22 @@ public class Test_GUI extends JFrame {
                 int x = mouseEvent.getX();
                 int y = mouseEvent.getY();
                 //System.out.println("x:"+x+" y:"+y);
-                if (y < 45 && 100 < x && x < 195) {
+                if (y < 45 && 100 < x && x < 230) {
                     if(game.board.movePlayer(game.currentPlayer,'u')){
                         map.repaint();
                     }
                 }
-                if (x < 98 && 47 < y && y < 86) {
+                if (x < 115 && 47 < y && y < 86) {
                     if(game.board.movePlayer(game.currentPlayer,'l')){
                         map.repaint();
                     }
                 }
-                if (195 < x && x < 290 && 47 < y && y < 87) {
+                if (230 < x && x < 340 && 47 < y && y < 87) {
                     if(game.board.movePlayer(game.currentPlayer,'r')){
                         map.repaint();
                     }
                 }
-                if (y > 88 && 100 < x && x < 195) {
+                if (y > 88 && 100 < x && x < 230) {
                     if(game.board.movePlayer(game.currentPlayer,'d')){
                         map.repaint();
                     }
@@ -356,7 +364,7 @@ public class Test_GUI extends JFrame {
      * Triggers if all players have been eliminated
      * could probably be merged with createWinWindow
      */
-    public void createLooseWindow() {
+    public void createLoseWindow() {
         JDialog dialog = new JDialog();
         dialog.getContentPane().setLayout(new BoxLayout(dialog.getContentPane(), BoxLayout.PAGE_AXIS));
         JPanel panel = (JPanel) dialog.getContentPane();

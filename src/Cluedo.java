@@ -9,7 +9,7 @@ public class Cluedo {
 
    // public Set<Card> winningCards = new HashSet<Card>();
     public ArrayList<Player> players = new ArrayList<Player>();
-    private Board board;
+    public Board board;
     private Boolean gameOn = true;
     
     public Player currentPlayer;
@@ -63,25 +63,8 @@ public class Cluedo {
      * This method sets up the players
      */
     public void setUpPlayers() {
-//        int num;
-//        while (true) {
-//            System.out.println("How many players do you want in this game?");
-//            System.out.println("You can have between 3 and 6 players.");
-//            Scanner in = new Scanner(System.in);
-//            num = in.nextInt();
-//            if (num >= 3 && num <= 6) {
-//                break;
-//            } else {
-//                System.out.println("Please choose between 3 and 6 players.");
-//            }
-//        }
-//        for (int i = 0; i < num; i++) {
-//            this.players.add(new Player(characters.get(i),"test"));
-//            //Collections.reverse(this.players);
-//        }
         Player_Select_UI start = new Player_Select_UI(this);
-        start.setUp();
-        players = start.getPlayers();
+        players = start.setUp();
 
         for(Player p:players){
             System.out.println(p.name+" as "+p.character);
@@ -132,7 +115,7 @@ public class Cluedo {
 
         //Shuffle and deal cards
         Collections.shuffle(toDeal);
-        System.out.println("Dealing cards...");
+        //System.out.println("Dealing cards...");
 
         while (!toDeal.isEmpty()) {
             for (Player p : players) {

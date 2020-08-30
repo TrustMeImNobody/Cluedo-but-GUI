@@ -15,7 +15,8 @@ public class Player_Select_UI extends JDialog{
     public Player_Select_UI(Cluedo g) {
         this.game = g;
     }
-    public void setUp(){
+
+    public ArrayList<Player> setUp(){
         f = new JDialog(this,"Character Select",true);
         f.setResizable(false);
         f.setSize(400, 450);
@@ -160,9 +161,6 @@ public class Player_Select_UI extends JDialog{
 
         f.setContentPane(main);
         f.setVisible(true);
-    }
-
-    public ArrayList<Player> getPlayers() {
         return players;
     }
 }
