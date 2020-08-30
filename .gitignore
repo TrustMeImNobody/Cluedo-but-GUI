@@ -2,3 +2,4 @@
 *.iml
 *.xml
 *.class
+out/META-INF/Cluedo-but-GUI.kotlin_module
