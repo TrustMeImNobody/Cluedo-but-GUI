@@ -156,7 +156,7 @@ public class Board {
      */
     public void kidnapPlayer(Player victim, Room destination){
         Room locat =  getPlayerRoom(victim);
-        if(locat==null||locat.equals(destination)){return;} //player not found or is already in the room, do nothing
+        if(locat!=null && locat.equals(destination)){return;} //player not found or is already in the room, do nothing
         int mid = destination.getCells().size()/2; //find the rough middle of the room
         Cell prev = victim.position; //players previous position
         for(int i=0;i<6;i++){ //6 trys should be enough to find an empty cell in the middle of the room
@@ -177,10 +177,12 @@ public class Board {
      * @param start the room to bring it to
      */
     public void moveWeapon(String weapon, Room start){
-        if(start.weapon.equals(weapon)){return;} //if the weapon is already here, do nothing
+        if(start.weapon != null && start.weapon.equals(weapon)){return;} //if the weapon is already here, do nothing
+        System.out.println("Starting for");
         for(Room r:rooms){
-            if(r.weapon.equals(weapon)){
-                if(!r.weapon.equals("")){ //swap weapons if one is currently in this room
+            if(r.weapon.equals(weapon)){//Found weapon to be moved
+                System.out.println("found");
+                if(r.weapon != null){ //swap weapons if one is currently in this room
                     r.weapon = start.weapon;
                 }
                 else{ //else remove the weapon from the other room
