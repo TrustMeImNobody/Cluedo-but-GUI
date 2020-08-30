@@ -169,7 +169,15 @@ public class Cluedo {
     public void suggestion(String suspect, String weapon) {
         String room = board.getPlayerRoom(currentPlayer).name;
        // System.out.println("You're suggesting that it was " + suspect + " with the " + weapon + " in the " + room);
-
+            for(Player s: players){
+                if(s != currentPlayer && s.character.equals(suspect)){
+                    board.kidnapPlayer(s,board.getPlayerRoom(currentPlayer));
+                    break;
+                }
+            }
+            board.moveWeapon(weapon, board.getPlayerRoom(currentPlayer));
+            gui.map.repaint();
+        
         for (Player s : getSuggestionOrder(currentPlayer)) {
             if (s != currentPlayer) {
                 ArrayList<Card> refutingCards = new ArrayList<Card>();
