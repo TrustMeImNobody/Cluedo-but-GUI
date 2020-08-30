@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.awt.event.WindowEvent;
 import java.util.*;
 
 public class Cluedo {
@@ -27,13 +28,60 @@ public class Cluedo {
     public ArrayList<Card> roomCards = new ArrayList<Card>();
     public ArrayList<Card> toDeal = new ArrayList<Card>();
 
+    public int dice1, dice2, diceTotal;
+    public boolean diceRolled = false;
+
+    public static Cluedo game;
+
     public static void main(String[] args){
-        Cluedo game = new Cluedo();
-        game.setUpPlayers();
-        game.gui = new Test_GUI(game);
-        game.board = new Board(game.players);
-        game.setUpCards();
-        game.runGame();
+        game = new Cluedo();
+        game.setUp();
+    }
+
+    public void setUp(){
+        gameOn = true;
+        resetFields();
+        setUpPlayers();
+        board = new Board(players);
+        gui = new Test_GUI(game);
+        setUpCards();
+        for(Player p:players){
+            System.out.println(p);
+        }
+        currentPlayer = players.get(0);
+        gui.updatePlayerDisplay(currentPlayer);
+    }
+
+    public void resetFields(){
+        tokens = new ArrayList<Icon>();
+        players = new ArrayList<Player>();
+        allCards = new ArrayList<Card>();
+        characterCards = new ArrayList<Card>();
+        weaponCards = new ArrayList<Card>();
+        roomCards = new ArrayList<Card>();
+        toDeal = new ArrayList<Card>();
+        gui = null;
+        winRoom = null;
+        winSus = null;
+        winWeapon = null;
+        diceRolled = false;
+    }
+
+    public void endGame(){
+        gameOn = false;
+        gui.dispatchEvent(new WindowEvent(gui,WindowEvent.WINDOW_CLOSING));
+        setUp();
+    }
+
+    public void nextPlayer(){
+        int index = players.indexOf(currentPlayer);
+        if(index==players.size()-1){
+            currentPlayer = players.get(0);
+        }
+        else{
+            currentPlayer = players.get(index+1);
+        }
+        gui.updatePlayerDisplay(currentPlayer);
     }
 
     public void runGame() {
@@ -64,10 +112,6 @@ public class Cluedo {
     public void setUpPlayers() {
         Player_Select_UI start = new Player_Select_UI(this);
         players = start.setUp();
-
-        for(Player p:players){
-            System.out.println(p.name+" as "+p.character);
-        }
 
         for(Player t: players){
             this.tokens.add(t.token);
@@ -102,12 +146,12 @@ public class Cluedo {
         Collections.shuffle(characterCards);
         Collections.shuffle(weaponCards);
         Collections.shuffle(roomCards);
-        
+
         winSus=characterCards.get(0);
         winWeapon=weaponCards.get(0);
         winRoom=roomCards.get(0);
 
-        //Remove winning cards from deal cards 
+        //Remove winning cards from deal cards
         toDeal.remove(characterCards.get(0));
         toDeal.remove(weaponCards.get(0));
         toDeal.remove(roomCards.get(0));
@@ -118,17 +162,14 @@ public class Cluedo {
 
         while (!toDeal.isEmpty()) {
             for (Player p : players) {
-                p.addCardToHand(toDeal.get(0));
-                toDeal.remove(0);
+                p.addCardToHand(toDeal.remove(0));
                 if (toDeal.isEmpty()) {
                     break;
                 }
             }
         }
         //debug code for printing winning cards
-//        for(Card c:winningCards){
-//            System.out.println(c.name);
-//        }
+        System.out.println(winSus+" "+winRoom+" "+winWeapon);
 
     }
 
@@ -156,32 +197,32 @@ public class Cluedo {
 //        }
 //        System.out.println("Do you want to move or make an accusation?");
 //        System.out.println("Enter 'move' to move or 'accuse' to make an accusation");
-        while (true) {
-            Scanner in = new Scanner(System.in);
-            String input = in.nextLine();
-            if (input.toLowerCase().equals("move")) {
-                if (move(player)) {
-                    System.out.println("You have entered a room, make a suggestion.");
-                    suggestion(player);
-                }
-                System.out.println("You may still make an accusation. Enter 'accuse' to make an accusation or anything else to end your turn.");
-                in = new Scanner(System.in);
-                input = in.nextLine();
-                if (!input.toLowerCase().equals("accuse")) {
-                    break;
-                }
-            }
-            if (input.toLowerCase().equals("accuse")) {
-//                if (accusation(player)) {
-//                    return true;
-//                } else {
-//                    System.out.println("Your accusation was wrong, you are out\n ");
-//                    player.accused = true;
+//        while (gameOn) {
+//            Scanner in = new Scanner(System.in);
+//            String input = in.nextLine();
+//            if (input.toLowerCase().equals("move")) {
+//                if (move(player)) {
+//                    System.out.println("You have entered a room, make a suggestion.");
+//                    suggestion(player);
 //                }
-                break;
-            }
-            System.out.println("Your input wasn't recognised, please try again");
-        }
+//                System.out.println("You may still make an accusation. Enter 'accuse' to make an accusation or anything else to end your turn.");
+//                in = new Scanner(System.in);
+//                input = in.nextLine();
+//                if (!input.toLowerCase().equals("accuse")) {
+//                    break;
+//                }
+//            }
+//            if (input.toLowerCase().equals("accuse")) {
+////                if (accusation(player)) {
+////                    return true;
+////                } else {
+////                    System.out.println("Your accusation was wrong, you are out\n ");
+////                    player.accused = true;
+////                }
+//                break;
+//            }
+//            System.out.println("Your input wasn't recognised, please try again");
+//        }
         return false;
     }
 
@@ -355,8 +396,6 @@ public class Cluedo {
         return (int) (Math.random() * 6 + 1);
     }
 
-    public int dice1, dice2, diceTotal;
-    public boolean diceRolled = false;
     public void rollDice(){
         diceRolled = true;
         dice1 = rollD6();

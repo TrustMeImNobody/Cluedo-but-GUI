@@ -33,17 +33,19 @@ public class Room {
         switch (name) {
             case "Kitchen":
             case "Dining Room":
-            case "Ballroom":
             case "Conservatory":
             case "Lounge":
                 cells.get(0).weapon = weapon;
+                break;
+            case "Ballroom":
+                cells.get(2).weapon = weapon;
                 break;
             case "Hall":
                 cells.get(24).weapon = weapon;
                 break;
             case "Study":
             case "Library":
-                cells.get(cells.size() - 1).weapon = weapon;
+                cells.get(cells.size() - 3).weapon = weapon;
                 break;
             case "Billiard Room":
                 cells.get(11).weapon = weapon;

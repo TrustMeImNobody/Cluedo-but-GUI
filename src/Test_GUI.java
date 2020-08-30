@@ -1,9 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 import java.util.ArrayList;
 
 public class Test_GUI extends JFrame {
@@ -25,7 +22,7 @@ public class Test_GUI extends JFrame {
      */
     public Test_GUI(Cluedo g){
         this.game = g;
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//todo update this at some point to open a dialog box
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setResizable(false); //don't let the window be resized so scaling can't break
 
         //the menu bar, self explanatory
@@ -67,6 +64,12 @@ public class Test_GUI extends JFrame {
         JMenu menu = new JMenu("Game");
         JMenuItem i1 = new JMenuItem("Restart Game");
         //todo action listener on this
+        i1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                game.endGame();
+            }
+        });
         menu.add(i1);
         menuBar.add(menu);
         return menuBar;
@@ -166,7 +169,8 @@ public class Test_GUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 //game.endCurrentTurn();
                 game.diceRolled = false;
-                //todo right the method to end the current turn
+                game.nextPlayer();
+                diceOutput.setText("Roll the dice");
             }
         });
         panel.add(endTurn);
@@ -204,6 +208,8 @@ public class Test_GUI extends JFrame {
             throw new Error("Player broke");
         }
         displayPlayer.setText(p.name + " as " + p.character);
+        displayPlayer.setOpaque(true);
+        displayPlayer.setBackground(p.token.color);
         for (JTextPane pane : displayHand) {
             pane.setText("Empty");
         }

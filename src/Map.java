@@ -39,10 +39,17 @@ public class Map extends JPanel {
                 g.fillRect(30 + col * 18, row*18, 18, 18);
                 g.setColor(Color.BLACK);
                 g.drawRect(30 + col * 18, row*18, 18, 18);
-                g.setFont(g.getFont().deriveFont(10.0f));
-                g.drawString(current.weapon, 30 + col * 18, (row*18) + 10);
+
             }
         }
+        for(int row = 0; row < board.size(); row++) {
+            for (int col = 0; col < board.get(row).size(); col++) {
+                Cell current = board.get(row).get(col);
+                g.setFont(g.getFont().deriveFont(10.0f));
+                g.drawString(current.weapon, 30 + col * 18, (row * 18) + 10);
+            }
+        }
+
         g.setColor(Color.red);
         g.setFont(g.getFont().deriveFont(12.0f));
         g.drawString("Kitchen", 53, 66);

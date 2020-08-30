@@ -27,8 +27,11 @@ public class Board {
         //build row 0 as it has only start cells for white and green
         ArrayList<Cell> temp = new ArrayList<>();
         for(int col=0;col<=23;col++){
-            if(col==9||col==14){
-                temp.add(new Cell(9,0,"   ")); //set the two not wall cells in this row
+            if(col==9){
+                temp.add(new Cell(9,0,"   ")); //set whites start
+            }
+            else if(col==14){
+                temp.add(new Cell(14,0,"   ")); //set greens start
             }
             else{ //fill the rest of the row with walls
                 temp.add(new Cell(col,0,"XXX"));
