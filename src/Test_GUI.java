@@ -174,8 +174,8 @@ public class Test_GUI extends JFrame {
         accuse.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                Accuse_Dialog dialog = new Accuse_Dialog(game);
-                dialog.setContents(Cluedo.characters, "You are making an accusation. Please choose a suspect:");
+                Get_Cards_Dialog dialog = new Get_Cards_Dialog(game);
+                dialog.setContents(Cluedo.characters, "You are making an accusation. Please choose a suspect:",true);
 
             }
         });
@@ -390,7 +390,8 @@ public class Test_GUI extends JFrame {
         button1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                //Do Carl's restart thing
+                game.endGame();
+                dialog.setVisible(false);
             }
         });
         bottomPanel.add(button1);
@@ -498,7 +499,18 @@ public class Test_GUI extends JFrame {
         dialog.pack();
     }
 
+    /**
+     * Getter for diceOutput - needed to end the turn
+     * @return
+     */
+    public JLabel getDiceOutput(){
+        return diceOutput;
+    }
 
+    public void createSuggestionDialog(){
+        Get_Cards_Dialog dialog = new Get_Cards_Dialog(game);
+        dialog.setContents(Cluedo.characters, "You are making a suggestion. Please choose a suspect:",false);
+    }
 }
 
 

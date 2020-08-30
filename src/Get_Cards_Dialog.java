@@ -4,7 +4,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-class Accuse_Dialog extends JDialog {
+class Get_Cards_Dialog extends JDialog {
     String suspect = "";
     String weapon = "";
     String location = "";
@@ -13,14 +13,14 @@ class Accuse_Dialog extends JDialog {
     public static final ArrayList<String> weapons = new ArrayList<String>(Arrays.asList("Candlestick", "Dagger", "Lead Pipe", "Revolver", "Rope", "Spanner"));
     public static final ArrayList<String> rooms = new ArrayList<String>(Arrays.asList("Kitchen", "Ballroom", "Conservatory", "Billiard Room", "Library", "Study", "Hall", "Lounge", "Dining Room"));
 
-    public Accuse_Dialog (Cluedo game){
-        this.game=game;
+    public Get_Cards_Dialog(Cluedo game) {
+        this.game = game;
     }
 
-    public void setContents(ArrayList<String> list, String string) {//maybe try updating the content panel? or making a new constructor to pass stuff along
+    public void setContents(ArrayList<String> list, String string, boolean accuse) {//maybe try updating the content panel? or making a new constructor to pass stuff along
         JPanel newPanel = new JPanel();
         newPanel.setLayout(new BoxLayout(newPanel, BoxLayout.Y_AXIS));
-        Accuse_Dialog dialog = this;
+        Get_Cards_Dialog dialog = this;
         JLabel title = new JLabel(string);
         newPanel.add(title);
 
@@ -30,18 +30,20 @@ class Accuse_Dialog extends JDialog {
             rButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent actionEvent) {
-                    if (suspect.equals("")){
-                        suspect=rButton.getText();
-                        dialog.setContents(weapons, "Please choose a weapon");
-                    }
-                    else if(weapon.equals("")){
-                        weapon=rButton.getText();
-                        dialog.setContents(rooms, "Please choose a room");
-                    }
-                    else if(location.equals("")){
-                        location=rButton.getText();
+                    if (suspect.equals("")) {
+                        suspect = rButton.getText();
+                        dialog.setContents(weapons, "Please choose a weapon", accuse);
+                    } else if (weapon.equals("")) {
+                        weapon = rButton.getText();
+                        if (accuse) {
+                            dialog.setContents(rooms, "Please choose a room", accuse);
+                        } else {
+                            game.suggestion(suspect, weapon);
+                        }
+                    } else if (location.equals("")) {
+                        location = rButton.getText();
                         dialog.setVisible(false);
-                        game.accusation(suspect,weapon,location);
+                        game.accusation(suspect, weapon, location);
                     }
                 }
             });

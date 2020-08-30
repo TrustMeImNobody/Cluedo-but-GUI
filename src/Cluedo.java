@@ -7,20 +7,20 @@ public class Cluedo {
     public Card winWeapon;
     public Card winRoom;
 
-   // public Set<Card> winningCards = new HashSet<Card>();
+    // public Set<Card> winningCards = new HashSet<Card>();
     public ArrayList<Player> players = new ArrayList<Player>();
     public Board board;
     private Boolean gameOn = true;
-    
+
     public Player currentPlayer;
     public Test_GUI gui;
     ArrayList<Icon> tokens = new ArrayList<Icon>();
-    
+
     //Array lists of character, weapon and room names
     public static final ArrayList<String> characters = new ArrayList<String>(Arrays.asList("Miss Scarlett", "Colonel Mustard", "Mrs. White", "Mr. Green", "Mrs. Peacock", "Professor Plum"));
     public static final ArrayList<String> weapons = new ArrayList<String>(Arrays.asList("Candlestick", "Dagger", "Lead Pipe", "Revolver", "Rope", "Spanner"));
     public static final ArrayList<String> rooms = new ArrayList<String>(Arrays.asList("Kitchen", "Ballroom", "Conservatory", "Billiard Room", "Library", "Study", "Hall", "Lounge", "Dining Room"));
-    
+
     //Lists needed for card setup
     public ArrayList<Card> allCards = new ArrayList<Card>();
     public ArrayList<Card> characterCards = new ArrayList<Card>();
@@ -33,12 +33,12 @@ public class Cluedo {
 
     public static Cluedo game;
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         game = new Cluedo();
         game.setUp();
     }
 
-    public void setUp(){
+    public void setUp() {
         gameOn = true;
         resetFields();
         setUpPlayers();
@@ -49,7 +49,7 @@ public class Cluedo {
         gui.updatePlayerDisplay(currentPlayer);
     }
 
-    public void resetFields(){
+    public void resetFields() {
         tokens = new ArrayList<Icon>();
         players = new ArrayList<Player>();
         allCards = new ArrayList<Card>();
@@ -64,26 +64,28 @@ public class Cluedo {
         diceRolled = false;
     }
 
-    public void endGame(){
+    public void endGame() {
         Restart_UI restart = new Restart_UI();
-        if(!restart.restart()){
+        if (!restart.restart()) {
             return;
         }
         gameOn = false;
         gui.restartClose = true;
-        gui.dispatchEvent(new WindowEvent(gui,WindowEvent.WINDOW_CLOSING));
+        gui.dispatchEvent(new WindowEvent(gui, WindowEvent.WINDOW_CLOSING));
         setUp();
     }
 
-    public void nextPlayer(){
+    public void nextPlayer() {
         int index = players.indexOf(currentPlayer);
-        if(index==players.size()-1){
+        if (index == players.size() - 1) {
             currentPlayer = players.get(0);
-        }
-        else{
-            currentPlayer = players.get(index+1);
+        } else {
+            currentPlayer = players.get(index + 1);
         }
         gui.updatePlayerDisplay(currentPlayer);
+        if (currentPlayer.accused) {
+            nextPlayer();
+        }
     }
 
     public void runGame() {
@@ -115,7 +117,7 @@ public class Cluedo {
         Player_Select_UI start = new Player_Select_UI(this);
         players = start.setUp();
 
-        for(Player t: players){
+        for (Player t : players) {
             this.tokens.add(t.token);
         }
     }
@@ -149,9 +151,9 @@ public class Cluedo {
         Collections.shuffle(weaponCards);
         Collections.shuffle(roomCards);
 
-        winSus=characterCards.get(0);
-        winWeapon=weaponCards.get(0);
-        winRoom=roomCards.get(0);
+        winSus = characterCards.get(0);
+        winWeapon = weaponCards.get(0);
+        winRoom = roomCards.get(0);
 
         //Remove winning cards from deal cards
         toDeal.remove(characterCards.get(0));
@@ -171,18 +173,17 @@ public class Cluedo {
             }
         }
         //debug code for printing winning cards
-        System.out.println(winSus+" "+winRoom+" "+winWeapon);
+        System.out.println(winSus + " " + winRoom + " " + winWeapon);
 
     }
 
     /**
-     *DO TURN METHOD
-     * 
+     * DO TURN METHOD
+     * <p>
      * Runs the turns for the current player
      * Will read inputs and perform different actions based on those inputs
-     * 
-     * @param player current player
      *
+     * @param player current player
      * @return boolean based on if current player has completed the wining turn
      */
     public boolean doTurn(Player player) {
@@ -229,30 +230,22 @@ public class Cluedo {
     }
 
     /**
-     *SUGGESTION METHOD
-     *
+     * SUGGESTION METHOD
+     * <p>
      * Runs the suggestion aspect of the game
      * Player inputs Character and Weapon (Room based on player location)
      * then compares the suggestion against other player's card
-     * 
+     * <p>
      * Prints out if the suggestion is refuted or not (Card details are printed if refuted)
      *
-     * @param player
-     * 
+     *
      */
-    public void suggestion(Player player) {
-        ArrayList<Card> hand = player.getHand();
-        System.out.println("Your hand consists of:");
-        for (Card card : hand) {
-            System.out.println(card);
-        }
-        String suspect = getInputCard("suspect", characters.toString(), characters);
-        String weapon = getInputCard("weapon", weapons.toString(), weapons);
-        String room = board.getPlayerRoom(player).name;
+    public void suggestion(String suspect, String weapon) {
+        String room = board.getPlayerRoom(currentPlayer).name;
         System.out.println("You're suggesting that it was " + suspect + " with the " + weapon + " in the " + room);
 
-        for (Player s : getSuggestionOrder(player)) {
-            if (s != player) {
+        for (Player s : getSuggestionOrder(currentPlayer)) {
+            if (s != currentPlayer) {
                 ArrayList<Card> refutingCards = new ArrayList<Card>();
                 for (Card c : s.hand) {
                     if (c.name.toLowerCase().equals(suspect.toLowerCase()) || c.name.toLowerCase().equals(weapon.toLowerCase()) || c.name.toLowerCase().equals(room.toLowerCase())) {
@@ -264,7 +257,6 @@ public class Cluedo {
                         System.out.println("Player: " + s.character + " has this card to refute your suggestion: " + refutingCards.get(0).name);
                         return;
                     } else {
-                        System.out.flush();
                         System.out.println("Player: " + s.getCharacter() + " has cards to refute your suggestion. Get this player to input ok to select a card");
                         Scanner in = new Scanner(System.in);
                         String input = in.next();
@@ -284,14 +276,13 @@ public class Cluedo {
 
 
     /**
-     *GET SUGGESTION ORDER METHOD
-     *
+     * GET SUGGESTION ORDER METHOD
+     * <p>
      * Helper method for the suggestion method
      * Takes in the player that made the suggestion
      * returns a list of all other players based on turn order (Excludes current player)
      *
      * @param player current player
-     *
      * @return list player refuting order
      */
     private ArrayList<Player> getSuggestionOrder(Player player) {//Should exclude player by default
@@ -312,17 +303,16 @@ public class Cluedo {
     }
 
     /**
-     *GET REFUTE CARD METHOD
-     *
+     * GET REFUTE CARD METHOD
+     * <p>
      * Helper method for the suggestion method
      * Allows the player that has multiple cards that refute the current suggestion
      * to chose which card they reveal to who made the suggestion
      *
-     * @param suspect Character that was suggested
-     * @param weapon Weapon that was suggested
-     * @param suspect Room that was suggested
+     * @param suspect       Character that was suggested
+     * @param weapon        Weapon that was suggested
+     * @param suspect       Room that was suggested
      * @param refutingCards Cards that refute the suggestion
-     *
      * @return string of the card name that player chooses
      */
     public String getRefuteCard(String suspect, String weapon, String room, ArrayList<Card> refutingCards) {
@@ -343,37 +333,11 @@ public class Cluedo {
     }
 
 
-    /**
-     *GET INPUT CARD METHOD
-     *
-     * Helper method for the suggestion and accusation method
-     * Allows the player to choose cards (based on type) they wish to use
-     * for suggesting or accusing.
-     *
-     * @param type of card being selected (Character, Weapon or room)
-     * @param listOfPossibilities Options player can pick based on type
-     * @param list list of card names of that type
-     *
-     * @return string of the card name that player chooses
-     */
-    public String getInputCard(String type, String listOfPossibilities, ArrayList<String> list) {//list and listOfPossibilities could be combind into one but this way seems easier
-        while (true) {
-            System.out.println("Now please enter a " + type + ":");
-            System.out.println("The list of " + type + "s consists of " + listOfPossibilities.toString());
-            Scanner in = new Scanner(System.in);
-            String input = in.nextLine();
-            if (list.contains(input)) {
-                return input;
-            } else {
-                System.out.println("That wasn't a valid " + type + "  name.");
-            }
-        }
-    }
 
 
     /**
-     *ACCUSATION METHOD
-     *
+     * ACCUSATION METHOD
+     * <p>
      * Method allows the player to make an accusation
      * Works similar to the suggestion method but room is chosen by player,
      * Does not cycle through other players, and eliminates player if they
@@ -385,43 +349,43 @@ public class Cluedo {
         System.out.println("You're accusing " + suspect + " with the " + weapon + " in the " + room);
         System.out.println("You're accusing " + winSus + " with the " + winWeapon + " in the " + winRoom);
         if (suspect.equals(winSus.name) && room.equals(winRoom.name) && weapon.equals(winWeapon.name)) {
-            gui.createWinWindow(currentPlayer,suspect,weapon,room);//do win shit - spawn a window and close the game
-        }
-        else{
-            currentPlayer.accused=true;
-            gui.createOutWindow(currentPlayer,suspect,weapon,room);
-            //has to end turn
+            gui.createWinWindow(currentPlayer, suspect, weapon, room);//do win shit - spawn a window and close the game
+        } else {
+            currentPlayer.accused = true;
+            gui.createOutWindow(currentPlayer, suspect, weapon, room);
+            this.diceRolled = false;
+            this.nextPlayer();
+            gui.getDiceOutput().setText("Roll the dice");
         }
     }
 
-    public static int rollD6(){
+    public static int rollD6() {
         return (int) (Math.random() * 6 + 1);
     }
 
-    public void rollDice(){
+    public void rollDice() {
         diceRolled = true;
         dice1 = rollD6();
         dice2 = rollD6();
-        diceTotal = dice1+dice2;
+        diceTotal = dice1 + dice2;
     }
 
     /**
      * MOVE METHOD
-     *
+     * <p>
      * Allows player to move across the board based on
-     * their 'Dice roll' 
+     * their 'Dice roll'
      *
      * @param player player moving
-     *
-     * @return boolean based on move success 
+     * @return boolean based on move success
      */
     public boolean move(Player player) {
-        if(!diceRolled){
+        if (!diceRolled) {
             JOptionPane.showMessageDialog(null, "Roll the dice first");
             return false;
         }
         int sum = dice1 + dice2;
-        boolean isInRoom = board.getPlayerRoom(player)!=null;
+        boolean isInRoom = board.getPlayerRoom(player) != null;
         System.out.println("You rolled " + sum);
         while (sum > 0) {
             //board.displayBoard();
@@ -429,12 +393,13 @@ public class Cluedo {
             System.out.println("Enter 'u' to move up, 'l' to move left, 'd' to move down or 'r' to move right");
             Scanner in = new Scanner(System.in);
             char input = in.next().charAt(0);
-            if  (board.movePlayer(player, input)) {
+            if (board.movePlayer(player, input)) {
                 sum -= 1;
                 Room temp = board.getPlayerRoom(player);
-                if (temp != null  && !isInRoom) {
+                if (temp != null && !isInRoom) {
                     //board.displayBoard();
                     System.out.println("You are in " + temp.name);
+                    gui.createSuggestionDialog();
                     return true;
                 }
             } else {
