@@ -536,7 +536,7 @@ public class GUI extends JFrame {
     }
 
     public void createNoRefutePanel(){
-        JDialog dialog = new JDialog();
+        JDialog dialog = new JDialog(this,"No Refute",true);
         JPanel panel = (JPanel) dialog.getContentPane();
         panel.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
         panel.setLayout(new BoxLayout(dialog.getContentPane(), BoxLayout.PAGE_AXIS));
