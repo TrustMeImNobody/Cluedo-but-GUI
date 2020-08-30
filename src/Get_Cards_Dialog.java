@@ -47,6 +47,7 @@ class Get_Cards_Dialog extends JDialog {
                         if (accuse) {
                             dialog.setContents(rooms, "Please choose a room", accuse);
                         } else {
+                            dialog.setVisible(false);
                             game.suggestion(suspect, weapon);
                         }
                     } else if (location.equals("")) {

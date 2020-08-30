@@ -167,7 +167,7 @@ public class Cluedo {
      */
     public void suggestion(String suspect, String weapon) {
         String room = board.getPlayerRoom(currentPlayer).name;
-        System.out.println("You're suggesting that it was " + suspect + " with the " + weapon + " in the " + room);
+       // System.out.println("You're suggesting that it was " + suspect + " with the " + weapon + " in the " + room);
 
         for (Player s : getSuggestionOrder(currentPlayer)) {
             if (s != currentPlayer) {
@@ -179,16 +179,16 @@ public class Cluedo {
                 }
                 if (!refutingCards.isEmpty()) {
                     if (refutingCards.size() == 1) {
-                        //call the method that shows the player and the card they have
+                        gui.createRefutePanel(s,refutingCards.get(0));
                         return;
                     } else {
-                        //call a method that asks the player to select a card - ask the player to confirm its them tho
+                        gui.createSelectRefutePanel(s);
                         return;
                     }
                 }
             }
         }
-        //call method that says "No other player has cards to refute your suggestion."
+        gui.createNoRefutePanel();
     }
 
 

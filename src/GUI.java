@@ -523,16 +523,19 @@ public class GUI extends JFrame {
         dialog.setContents(Cluedo.characters, "You are making a suggestion. Please choose a suspect:",false);
     }
 
-    public void createRefutePanel(){
+    public void createRefutePanel(Player player, Card refuteCard){
 
     }
 
-    public void createSelectRefutePanel(){
-        //call method that shows the player and the card they have
+    public void createSelectRefutePanel(Player player){
+
+
+        createRefutePanel(player, null);
     }
 
     public void createNoRefutePanel(){
-
+        JDialog dialog = new JDialog();
+        
     }
 }
 
