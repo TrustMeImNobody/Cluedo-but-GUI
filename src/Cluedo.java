@@ -250,6 +250,8 @@ public class Cluedo {
         } else {
             currentPlayer.accused = true;
             gui.createOutWindow(currentPlayer, suspect, weapon, room);
+            currentPlayer.position.player = null;
+            gui.map.repaint();
             this.nextPlayer();
             gui.getDiceOutput().setText("Roll the dice");
         }
