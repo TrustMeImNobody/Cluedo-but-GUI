@@ -12,9 +12,12 @@ public class Test_GUI extends JFrame {
     private JLabel diceOutput;
     private ArrayList<JTextPane> displayHand;
     private JLabel displayPlayer;
+    private JFrame f;
 
     public Cluedo game;
     public Map map;
+
+    public boolean restartClose = false;
 
     /**
      * Constructor, creates the background frame and calls methods to build the rest of the GUI
@@ -22,8 +25,9 @@ public class Test_GUI extends JFrame {
      */
     public Test_GUI(Cluedo g){
         this.game = g;
-        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         this.setResizable(false); //don't let the window be resized so scaling can't break
+        f = this;
 
         //the menu bar, self explanatory
         JMenuBar bar = createMenuBar();
@@ -54,6 +58,22 @@ public class Test_GUI extends JFrame {
         this.add(backgroundPanel);
         this.setVisible(true);
         this.setSize(windowWidth, windowHeight);
+
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                if(restartClose){ //don't bother with the confirmation dialogue if resetting window
+                    f.setVisible(false);
+                    return;
+                }
+                if (JOptionPane.showConfirmDialog(null,
+                        "Are you sure you want to quit the game?", "Quit Game?",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION){
+                    System.exit(0);
+                }
+            }
+        });
     }
 
     /**

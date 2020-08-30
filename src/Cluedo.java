@@ -45,9 +45,6 @@ public class Cluedo {
         board = new Board(players);
         gui = new Test_GUI(game);
         setUpCards();
-        for(Player p:players){
-            System.out.println(p);
-        }
         currentPlayer = players.get(0);
         gui.updatePlayerDisplay(currentPlayer);
     }
@@ -68,7 +65,12 @@ public class Cluedo {
     }
 
     public void endGame(){
+        restart_UI quit = new restart_UI();
+        if(!quit.restart()){
+            return;
+        }
         gameOn = false;
+        gui.restartClose = true;
         gui.dispatchEvent(new WindowEvent(gui,WindowEvent.WINDOW_CLOSING));
         setUp();
     }
