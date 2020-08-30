@@ -1,7 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 
-public class restart_UI extends JDialog {
+public class Restart_UI extends JDialog {
     private JDialog f;
     private boolean reset = false;
     public boolean restart(){

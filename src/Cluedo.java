@@ -65,8 +65,8 @@ public class Cluedo {
     }
 
     public void endGame(){
-        restart_UI quit = new restart_UI();
-        if(!quit.restart()){
+        Restart_UI restart = new Restart_UI();
+        if(!restart.restart()){
             return;
         }
         gameOn = false;
