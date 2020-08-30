@@ -117,9 +117,6 @@ public class Board {
             }
         }
         if(playerCell==null){return false;} //if the player isn't on the board, break from the method
-//        if(getPlayerRoom(player)!=null){ //if player is in room
-//
-//        }
         //find the cell the player is being moved to
         Cell target = null;
         switch(direction){

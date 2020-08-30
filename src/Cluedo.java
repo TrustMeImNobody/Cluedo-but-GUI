@@ -147,19 +147,16 @@ public class Cluedo {
         currentPlayer = player;
         //board.displayBoard();
         //System.out.println(player.character + " it is your turn!");
-        ArrayList<Card> hand = player.getHand();
+        //ArrayList<Card> hand = player.getHand();
         gui.updatePlayerDisplay(player);
-        //System.out.println("Your hand consists of:");
-//        for (Card card : hand) {
-//            System.out.println(card);
+
+//        if (board.getPlayerRoom(player) != null) {
+//            System.out.println("You are in the " + board.getPlayerRoom(player).name);
+//        } else {
+//            System.out.println("You are not currently in any room");
 //        }
-        if (board.getPlayerRoom(player) != null) {
-            System.out.println("You are in the " + board.getPlayerRoom(player).name);
-        } else {
-            System.out.println("You are not currently in any room");
-        }
-        System.out.println("Do you want to move or make an accusation?");
-        System.out.println("Enter 'move' to move or 'accuse' to make an accusation");
+//        System.out.println("Do you want to move or make an accusation?");
+//        System.out.println("Enter 'move' to move or 'accuse' to make an accusation");
         while (true) {
             Scanner in = new Scanner(System.in);
             String input = in.nextLine();
@@ -359,6 +356,15 @@ public class Cluedo {
         return (int) (Math.random() * 6 + 1);
     }
 
+    public int dice1, dice2, diceTotal;
+    public boolean diceRolled = false;
+    public void rollDice(){
+        diceRolled = true;
+        dice1 = rollD6();
+        dice2 = rollD6();
+        diceTotal = dice1+dice2;
+    }
+
     /**
      * MOVE METHOD
      *
@@ -370,10 +376,12 @@ public class Cluedo {
      * @return boolean based on move success 
      */
     public boolean move(Player player) {
-        int dice1 = rollD6();
-        int dice2 = rollD6();
+        if(!diceRolled){
+            JOptionPane.showMessageDialog(null, "Roll the dice first");
+            return false;
+        }
         int sum = dice1 + dice2;
-        Boolean isInRoom = board.getPlayerRoom(player)!=null;
+        boolean isInRoom = board.getPlayerRoom(player)!=null;
         System.out.println("You rolled " + sum);
         while (sum > 0) {
             //board.displayBoard();

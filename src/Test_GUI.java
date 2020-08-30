@@ -103,16 +103,20 @@ public class Test_GUI extends JFrame {
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(2, 1));
         JButton roller = new JButton("Roll Dice");
+        roller.setBorder(BorderFactory.createLineBorder(Color.black,1));
         roller.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                int d1 = Cluedo.rollD6();
-                int d2 = Cluedo.rollD6();
-                diceOutput.setText("Test " + d1 + " + " + d2 + " = " + (d1 + d2));
+                if(game.diceRolled){
+                    JOptionPane.showMessageDialog(null, "You've already rolled the dice");
+                    return;
+                }
+                game.rollDice();
+                diceOutput.setText("You rolled " + game.dice1 + " and " + game.dice2 + " for a total of " + (game.dice1+game.dice2));
             }
         });
         panel.add(roller);
-        diceOutput = new JLabel("Dice output\n here");
+        diceOutput = new JLabel("Roll the dice");
         panel.add(diceOutput);
         return panel;
     }
@@ -120,16 +124,8 @@ public class Test_GUI extends JFrame {
     public JPanel createAccusePanel() {
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(2, 1));
-        JButton endTurn = new JButton("End Turn");
-        endTurn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //game.endCurrentTurn();
-                //todo right the method to end the current turn
-            }
-        });
-        panel.add(endTurn);
         JButton accuse = new JButton("Accuse");
+        accuse.setBorder(BorderFactory.createLineBorder(Color.black,1));
         accuse.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -140,6 +136,18 @@ public class Test_GUI extends JFrame {
             }
         });
         panel.add(accuse);
+
+        JButton endTurn = new JButton("End Turn");
+        endTurn.setBorder(BorderFactory.createLineBorder(Color.black,1));
+        endTurn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //game.endCurrentTurn();
+                game.diceRolled = false;
+                //todo right the method to end the current turn
+            }
+        });
+        panel.add(endTurn);
 
         return panel;
     }
@@ -227,26 +235,42 @@ public class Test_GUI extends JFrame {
 
             @Override
             public void mouseReleased(MouseEvent mouseEvent) {
+                if(!game.diceRolled){
+                    JOptionPane.showMessageDialog(null, "Roll the dice");
+                    return;
+                }
+                if(game.diceTotal<=0){
+                    JOptionPane.showMessageDialog(null, "You have used up all of your movement");
+                    return;
+                }
                 int x = mouseEvent.getX();
                 int y = mouseEvent.getY();
                 //System.out.println("x:"+x+" y:"+y);
                 if (y < 45 && 100 < x && x < 230) {
                     if(game.board.movePlayer(game.currentPlayer,'u')){
+                        game.diceTotal--;
+                        diceOutput.setText("You have "+game.diceTotal+" movement remaining");
                         map.repaint();
                     }
                 }
                 if (x < 115 && 47 < y && y < 86) {
                     if(game.board.movePlayer(game.currentPlayer,'l')){
+                        game.diceTotal--;
+                        diceOutput.setText("You have "+game.diceTotal+" movement remaining");
                         map.repaint();
                     }
                 }
                 if (230 < x && x < 340 && 47 < y && y < 87) {
                     if(game.board.movePlayer(game.currentPlayer,'r')){
+                        game.diceTotal--;
+                        diceOutput.setText("You have "+game.diceTotal+" movement remaining");
                         map.repaint();
                     }
                 }
                 if (y > 88 && 100 < x && x < 230) {
                     if(game.board.movePlayer(game.currentPlayer,'d')){
+                        game.diceTotal--;
+                        diceOutput.setText("You have "+game.diceTotal+" movement remaining");
                         map.repaint();
                     }
                 }
