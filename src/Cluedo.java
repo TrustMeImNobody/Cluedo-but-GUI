@@ -47,6 +47,7 @@ public class Cluedo {
         setUpCards();
         currentPlayer = players.get(0);
         gui.updatePlayerDisplay(currentPlayer);
+        rollDice();
     }
 
     public void resetFields() {
@@ -86,6 +87,7 @@ public class Cluedo {
         if (currentPlayer.accused) {
             nextPlayer();
         }
+        rollDice();
     }
 
 
@@ -261,6 +263,7 @@ public class Cluedo {
         dice1 = rollD6();
         dice2 = rollD6();
         diceTotal = dice1 + dice2;
+        gui.updateDiceOutput(diceTotal);
     }
 
 
