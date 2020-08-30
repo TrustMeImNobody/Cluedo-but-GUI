@@ -88,27 +88,6 @@ public class Cluedo {
         }
     }
 
-    public void runGame() {
-        while (gameOn) {
-            boolean playerGone = false;
-            for (Player player : players) {
-                if (player.accused) {
-                    continue;
-                }
-                playerGone = true;
-                if (doTurn(player)) {//doTurn returns true if the player won so this handles the winning bit
-                    System.out.println(player.character + " wins!");
-                    System.out.println("They worked out that the murderer was " + winSus.name + " in the " + winRoom.name + " with the " + winWeapon.name);
-                    gameOn = false;
-                    break; //break the for loop when someone wins
-                }
-            }
-            if (!playerGone) {
-                System.out.println("All of the players have been eliminated, no one wins");
-                break;
-            }
-        }
-    }
 
     /**
      * This method sets up the players
@@ -178,58 +157,6 @@ public class Cluedo {
     }
 
     /**
-     * DO TURN METHOD
-     * <p>
-     * Runs the turns for the current player
-     * Will read inputs and perform different actions based on those inputs
-     *
-     * @param player current player
-     * @return boolean based on if current player has completed the wining turn
-     */
-    public boolean doTurn(Player player) {
-        currentPlayer = player;
-        //board.displayBoard();
-        //System.out.println(player.character + " it is your turn!");
-        //ArrayList<Card> hand = player.getHand();
-        gui.updatePlayerDisplay(player);
-
-//        if (board.getPlayerRoom(player) != null) {
-//            System.out.println("You are in the " + board.getPlayerRoom(player).name);
-//        } else {
-//            System.out.println("You are not currently in any room");
-//        }
-//        System.out.println("Do you want to move or make an accusation?");
-//        System.out.println("Enter 'move' to move or 'accuse' to make an accusation");
-//        while (gameOn) {
-//            Scanner in = new Scanner(System.in);
-//            String input = in.nextLine();
-//            if (input.toLowerCase().equals("move")) {
-//                if (move(player)) {
-//                    System.out.println("You have entered a room, make a suggestion.");
-//                    suggestion(player);
-//                }
-//                System.out.println("You may still make an accusation. Enter 'accuse' to make an accusation or anything else to end your turn.");
-//                in = new Scanner(System.in);
-//                input = in.nextLine();
-//                if (!input.toLowerCase().equals("accuse")) {
-//                    break;
-//                }
-//            }
-//            if (input.toLowerCase().equals("accuse")) {
-////                if (accusation(player)) {
-////                    return true;
-////                } else {
-////                    System.out.println("Your accusation was wrong, you are out\n ");
-////                    player.accused = true;
-////                }
-//                break;
-//            }
-//            System.out.println("Your input wasn't recognised, please try again");
-//        }
-        return false;
-    }
-
-    /**
      * SUGGESTION METHOD
      * <p>
      * Runs the suggestion aspect of the game
@@ -237,8 +164,6 @@ public class Cluedo {
      * then compares the suggestion against other player's card
      * <p>
      * Prints out if the suggestion is refuted or not (Card details are printed if refuted)
-     *
-     *
      */
     public void suggestion(String suspect, String weapon) {
         String room = board.getPlayerRoom(currentPlayer).name;
@@ -254,24 +179,24 @@ public class Cluedo {
                 }
                 if (!refutingCards.isEmpty()) {
                     if (refutingCards.size() == 1) {
-                        System.out.println("Player: " + s.character + " has this card to refute your suggestion: " + refutingCards.get(0).name);
+                        //call the method that shows the player and the card they have
+                        //System.out.println("Player: " + s.character + " has this card to refute your suggestion: " + refutingCards.get(0).name);
                         return;
                     } else {
+                        //call a method that asks the player to select a card - ask the player to confirm its them tho
                         System.out.println("Player: " + s.getCharacter() + " has cards to refute your suggestion. Get this player to input ok to select a card");
                         Scanner in = new Scanner(System.in);
                         String input = in.next();
-                        if (input.toLowerCase().equals("ok")) {
-                            String refute = getRefuteCard(suspect, weapon, room, refutingCards);
-                            System.out.flush();
-                            System.out.println("You suggested that it was " + suspect + " with the " + weapon + " in the " + room);
-                            System.out.println("Player: " + s.character + " has this card to refute your suggestion: " + refute);
-                            return;
-                        }
+                        //call method that shows the player and the card they have
+                        //System.out.println("You suggested that it was " + suspect + " with the " + weapon + " in the " + room);
+                        //System.out.println("Player: " + s.character + " has this card to refute your suggestion: " + refute);
+                        return;
                     }
                 }
             }
         }
-        System.out.println("No other player has cards to refute your suggestion.");
+        //call method that says "No other player has cards to refute your suggestion."
+        //System.out.println("No other player has cards to refute your suggestion.");
     }
 
 
@@ -301,38 +226,6 @@ public class Cluedo {
         }
         return order;
     }
-
-    /**
-     * GET REFUTE CARD METHOD
-     * <p>
-     * Helper method for the suggestion method
-     * Allows the player that has multiple cards that refute the current suggestion
-     * to chose which card they reveal to who made the suggestion
-     *
-     * @param suspect       Character that was suggested
-     * @param weapon        Weapon that was suggested
-     * @param suspect       Room that was suggested
-     * @param refutingCards Cards that refute the suggestion
-     * @return string of the card name that player chooses
-     */
-    public String getRefuteCard(String suspect, String weapon, String room, ArrayList<Card> refutingCards) {
-        while (true) {
-            System.out.println("The suggestion is: " + suspect + " with the " + weapon + "in the " + room);
-            System.out.println("The cards you have that refute is are: " + refutingCards.toString());
-            System.out.println("Please select one of these cards by inputting the name. Once you have selected your card, get the player who made the suggestion");
-            Scanner in = new Scanner(System.in);
-            String input = in.nextLine();
-            for (Card c : refutingCards) {
-                if (c.getName().toLowerCase().equals(input.toLowerCase())) {
-                    return c.getName();
-                }
-            }
-            System.out.println("That wasn't a valid card name");
-        }
-
-    }
-
-
 
 
     /**
@@ -370,47 +263,6 @@ public class Cluedo {
         diceTotal = dice1 + dice2;
     }
 
-    /**
-     * MOVE METHOD
-     * <p>
-     * Allows player to move across the board based on
-     * their 'Dice roll'
-     *
-     * @param player player moving
-     * @return boolean based on move success
-     */
-    public boolean move(Player player) {
-        if (!diceRolled) {
-            JOptionPane.showMessageDialog(null, "Roll the dice first");
-            return false;
-        }
-        int sum = dice1 + dice2;
-        boolean isInRoom = board.getPlayerRoom(player) != null;
-        System.out.println("You rolled " + sum);
-        while (sum > 0) {
-            //board.displayBoard();
-            System.out.println("You can still move " + sum + " tiles.");
-            System.out.println("Enter 'u' to move up, 'l' to move left, 'd' to move down or 'r' to move right");
-            Scanner in = new Scanner(System.in);
-            char input = in.next().charAt(0);
-            if (board.movePlayer(player, input)) {
-                sum -= 1;
-                Room temp = board.getPlayerRoom(player);
-                if (temp != null && !isInRoom) {
-                    //board.displayBoard();
-                    System.out.println("You are in " + temp.name);
-                    gui.createSuggestionDialog();
-                    return true;
-                }
-            } else {
-                System.out.println("That was not a valid move, please try again");
-            }
-
-        }
-        //board.displayBoard();
-        System.out.println("You have finished your move.");
-        return false;
-    }
 
 }
 

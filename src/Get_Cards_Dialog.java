@@ -4,6 +4,9 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * A class for getting the card input for accusing and suggesting
+ */
 class Get_Cards_Dialog extends JDialog {
     String suspect = "";
     String weapon = "";
@@ -17,7 +20,13 @@ class Get_Cards_Dialog extends JDialog {
         this.game = game;
     }
 
-    public void setContents(ArrayList<String> list, String string, boolean accuse) {//maybe try updating the content panel? or making a new constructor to pass stuff along
+    /**
+     *
+     * @param list
+     * @param string
+     * @param accuse if this is being used to get the cards for accusing or for suggesting
+     */
+    public void setContents(ArrayList<String> list, String string, boolean accuse) {
         JPanel newPanel = new JPanel();
         newPanel.setLayout(new BoxLayout(newPanel, BoxLayout.Y_AXIS));
         Get_Cards_Dialog dialog = this;
