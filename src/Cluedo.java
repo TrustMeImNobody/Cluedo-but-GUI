@@ -182,23 +182,15 @@ public class Cluedo {
                 if (!refutingCards.isEmpty()) {
                     if (refutingCards.size() == 1) {
                         //call the method that shows the player and the card they have
-                        //System.out.println("Player: " + s.character + " has this card to refute your suggestion: " + refutingCards.get(0).name);
                         return;
                     } else {
                         //call a method that asks the player to select a card - ask the player to confirm its them tho
-                        System.out.println("Player: " + s.getCharacter() + " has cards to refute your suggestion. Get this player to input ok to select a card");
-                        Scanner in = new Scanner(System.in);
-                        String input = in.next();
-                        //call method that shows the player and the card they have
-                        //System.out.println("You suggested that it was " + suspect + " with the " + weapon + " in the " + room);
-                        //System.out.println("Player: " + s.character + " has this card to refute your suggestion: " + refute);
                         return;
                     }
                 }
             }
         }
         //call method that says "No other player has cards to refute your suggestion."
-        //System.out.println("No other player has cards to refute your suggestion.");
     }
 
 
