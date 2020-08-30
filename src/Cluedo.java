@@ -1,4 +1,3 @@
-import javax.swing.*;
 import java.awt.event.WindowEvent;
 import java.util.*;
 
@@ -13,7 +12,7 @@ public class Cluedo {
     private Boolean gameOn = true;
 
     public Player currentPlayer;
-    public Test_GUI gui;
+    public GUI gui;
     ArrayList<Icon> tokens = new ArrayList<Icon>();
 
     //Array lists of character, weapon and room names
@@ -29,7 +28,6 @@ public class Cluedo {
     public ArrayList<Card> toDeal = new ArrayList<Card>();
 
     public int dice1, dice2, diceTotal;
-    public boolean diceRolled = false;
 
     public static Cluedo game;
 
@@ -43,7 +41,7 @@ public class Cluedo {
         resetFields();
         setUpPlayers();
         board = new Board(players);
-        gui = new Test_GUI(game);
+        gui = new GUI(game);
         setUpCards();
         currentPlayer = players.get(0);
         gui.updatePlayerDisplay(currentPlayer);
@@ -62,7 +60,6 @@ public class Cluedo {
         winRoom = null;
         winSus = null;
         winWeapon = null;
-        diceRolled = false;
     }
 
     public void endGame() {
@@ -83,10 +80,11 @@ public class Cluedo {
         } else {
             currentPlayer = players.get(index + 1);
         }
-        gui.updatePlayerDisplay(currentPlayer);
         if (currentPlayer.accused) {
             nextPlayer();
         }
+        gui.updatePlayerDisplay(currentPlayer);
+        gui.canSuggest();
         rollDice();
     }
 
@@ -248,7 +246,6 @@ public class Cluedo {
         } else {
             currentPlayer.accused = true;
             gui.createOutWindow(currentPlayer, suspect, weapon, room);
-            this.diceRolled = false;
             this.nextPlayer();
             gui.getDiceOutput().setText("Roll the dice");
         }
@@ -259,7 +256,6 @@ public class Cluedo {
     }
 
     public void rollDice() {
-        diceRolled = true;
         dice1 = rollD6();
         dice2 = rollD6();
         diceTotal = dice1 + dice2;
