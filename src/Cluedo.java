@@ -9,10 +9,11 @@ public class Cluedo {
     // public Set<Card> winningCards = new HashSet<Card>();
     public ArrayList<Player> players = new ArrayList<Player>();
     public Board board;
-    private Boolean gameOn = true;
+
 
     public Player currentPlayer;
     public GUI gui;
+    public boolean suggestedThisTurn;
     ArrayList<Icon> tokens = new ArrayList<Icon>();
 
     //Array lists of character, weapon and room names
@@ -37,7 +38,6 @@ public class Cluedo {
     }
 
     public void setUp() {
-        gameOn = true;
         resetFields();
         setUpPlayers();
         board = new Board(players);
@@ -49,6 +49,7 @@ public class Cluedo {
     }
 
     public void resetFields() {
+        suggestedThisTurn = false;
         tokens = new ArrayList<Icon>();
         players = new ArrayList<Player>();
         allCards = new ArrayList<Card>();
@@ -67,7 +68,6 @@ public class Cluedo {
         if (!restart.restart()) {
             return;
         }
-        gameOn = false;
         gui.restartClose = true;
         gui.dispatchEvent(new WindowEvent(gui, WindowEvent.WINDOW_CLOSING));
         setUp();
@@ -84,6 +84,7 @@ public class Cluedo {
             nextPlayer();
         }
         gui.updatePlayerDisplay(currentPlayer);
+        suggestedThisTurn = false;
         gui.canSuggest();
         rollDice();
     }

@@ -162,7 +162,7 @@ public class GUI extends JFrame {
      * Only allow the player to suggest if they're in a room
      */
     public void canSuggest(){
-        if(game.board.getPlayerRoom(game.currentPlayer)!=null){
+        if(game.board.getPlayerRoom(game.currentPlayer)!=null&&!game.suggestedThisTurn){
             suggest.setEnabled(true);
         }
         else{
@@ -521,6 +521,8 @@ public class GUI extends JFrame {
     public void createSuggestionDialog(){
         Get_Cards_Dialog dialog = new Get_Cards_Dialog(game);
         dialog.setContents(Cluedo.characters, "You are making a suggestion. Please choose a suspect:",false);
+        game.suggestedThisTurn = true;
+        canSuggest();
     }
 
     public void createRefutePanel(Player player, Card refuteCard){
