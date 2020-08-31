@@ -270,7 +270,7 @@ public class Cluedo {
     }
 
     public static int rollD6() {
-        return (int) (Math.random() * 6 + 1);
+        return (int) (Math.random() * 6) + 1;
     }
 
     public void rollDice() {
