@@ -2,7 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class Player_Select_UI extends JDialog{
+public class Player_Select_UI extends JDialog {
     private JDialog f;
     private JTextField purpleName, blueName, greenName, redName, whiteName, mustardName;
     private JRadioButton purpleRadButton, blueRadButton, greenRadButton, redRadButton, whiteRadButton, mustardRadButton;
@@ -18,10 +18,11 @@ public class Player_Select_UI extends JDialog{
      * Sets up the player select dialogue, and waits for the dialog to close before allowing the main program to continue setting
      * up the rest of the game. Each radio box controls whether the text box next to it is active and whether that text box should be
      * considered when the done button is pressed.
+     *
      * @return the list of generated players
      */
-    public ArrayList<Player> setUp(){
-        f = new JDialog(this,"Character Select",true); //this one line of code stops everything until the dialog box closes
+    public ArrayList<Player> setUp() {
+        f = new JDialog(this, "Character Select", true); //this one line of code stops everything until the dialog box closes
         f.setSize(400, 450);
         f.setResizable(false); //don't let the window be resized so the scaling doesn't break
 

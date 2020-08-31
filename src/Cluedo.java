@@ -37,6 +37,9 @@ public class Cluedo {
         game.setUp();
     }
 
+    /**
+     * Calls all the methods required to set up a new game and then starts the first players turn
+     */
     public void setUp() {
         resetFields();
         setUpPlayers();
@@ -48,6 +51,9 @@ public class Cluedo {
         rollDice();
     }
 
+    /**
+     * Reset all the major fields of the game for when the game is restarted
+     */
     public void resetFields() {
         suggestedThisTurn = false;
         tokens = new ArrayList<Icon>();
@@ -63,8 +69,13 @@ public class Cluedo {
         winWeapon = null;
     }
 
+    /**
+     * Used to end the currently running game, close the window it's in, and start a new game
+     *
+     * @param menuTrigger boolean to determine whether the JMenuItem triggered the end of the game or one of the end state JDialogs
+     */
     public void endGame(boolean menuTrigger) {
-        if(menuTrigger) {
+        if (menuTrigger) {
             Restart_UI restart = new Restart_UI();
             if (!restart.restart()) {
                 return;
@@ -75,8 +86,11 @@ public class Cluedo {
         setUp();
     }
 
+    /**
+     * Used by the end turn button to select the next player and update the GUI and appropriate fields
+     */
     public void nextPlayer() {
-        if(gameLost()){
+        if (gameLost()) {
             gui.createLoseWindow();
             return;
         }
@@ -95,9 +109,14 @@ public class Cluedo {
         rollDice();
     }
 
-    public boolean gameLost(){
-        for(Player p:players){
-            if(!p.accused){
+    /**
+     * Checks to see if all players have failed an accusation and therefore no players remain meaning the game is lost
+     *
+     * @return
+     */
+    public boolean gameLost() {
+        for (Player p : players) {
+            if (!p.accused) {
                 return false;
             }
         }
@@ -156,7 +175,6 @@ public class Cluedo {
 
         //Shuffle and deal cards
         Collections.shuffle(toDeal);
-        //System.out.println("Dealing cards...");
 
         while (!toDeal.isEmpty()) {
             for (Player p : players) {
@@ -166,8 +184,6 @@ public class Cluedo {
                 }
             }
         }
-        //debug code for printing winning cards
-        System.out.println(winSus + " " + winRoom + " " + winWeapon);
 
     }
 
@@ -182,16 +198,15 @@ public class Cluedo {
      */
     public void suggestion(String suspect, String weapon) {
         String room = board.getPlayerRoom(currentPlayer).name;
-       // System.out.println("You're suggesting that it was " + suspect + " with the " + weapon + " in the " + room);
-            for(Player s: players){
-                if(s != currentPlayer && s.character.equals(suspect)){
-                    board.kidnapPlayer(s,board.getPlayerRoom(currentPlayer));
-                    break;
-                }
+        for (Player s : players) {
+            if (s != currentPlayer && s.character.equals(suspect)) {
+                board.kidnapPlayer(s, board.getPlayerRoom(currentPlayer));
+                break;
             }
-            board.moveWeapon(weapon, board.getPlayerRoom(currentPlayer));
-            gui.map.repaint();
-        
+        }
+        board.moveWeapon(weapon, board.getPlayerRoom(currentPlayer));
+        gui.map.repaint();
+
         for (Player s : getSuggestionOrder(currentPlayer)) {
             if (s != currentPlayer) {
                 ArrayList<Card> refutingCards = new ArrayList<Card>();
@@ -202,7 +217,7 @@ public class Cluedo {
                 }
                 if (!refutingCards.isEmpty()) {
                     if (refutingCards.size() == 1) {
-                        gui.createRefutePanel(s,refutingCards.get(0));
+                        gui.createRefutePanel(s, refutingCards.get(0));
                     } else {
                         gui.createSelectRefutePanel(s, refutingCards);
                     }
@@ -269,6 +284,9 @@ public class Cluedo {
         return (int) (Math.random() * 6) + 1;
     }
 
+    /**
+     * Roll the dice and update the dice display
+     */
     public void rollDice() {
         dice1 = rollD6();
         dice2 = rollD6();

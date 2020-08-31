@@ -5,8 +5,13 @@ public class Icon {
     String text;
     Color color;
 
-    public Icon(String text){
-        switch(text){
+    /**
+     * Determines what colour each characters token will display as
+     *
+     * @param text
+     */
+    public Icon(String text) {
+        switch (text) {
             //Character Icon and start Position Setup
             case "Colonel Mustard":
                 this.color = Color.orange;
@@ -29,12 +34,13 @@ public class Icon {
                 this.text = "Pe";
                 break;
             case "Professor Plum":
-                this.color = new Color(200,0,200);
+                this.color = new Color(200, 0, 200);
                 this.text = "Pl";
                 break;
         }
 
     }
+
     public String getText() {
         return text;
     }

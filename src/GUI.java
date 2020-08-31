@@ -387,6 +387,9 @@ public class GUI extends JFrame {
         return test;
     }
 
+    /**
+     * Creates the window that tells the player they have won and asks them if they wish to play again
+     */
     public void createWinWindow(Player player, String suspect, String weapon, String room) {
         JDialog dialog = new JDialog(this, "You Win", true);
         dialog.setSize(new Dimension(500, 150));
@@ -435,6 +438,9 @@ public class GUI extends JFrame {
         dialog.pack();
     }
 
+    /**
+     * Creates the window that tells the player their accusation was wrong and they're out of the game
+     */
     public void createOutWindow(Player player, String suspect, String weapon, String room) {
         JDialog dialog = new JDialog(this, "You're Out", true);
         dialog.setSize(new Dimension(500, 150));
@@ -474,8 +480,7 @@ public class GUI extends JFrame {
     }
 
     /**
-     * Triggers if all players have been eliminated
-     * could probably be merged with createWinWindow
+     * Triggers if all players have been eliminated, offers the players to play again
      */
     public void createLoseWindow() {
         JDialog dialog = new JDialog(this, "Game Over", true);
@@ -532,6 +537,9 @@ public class GUI extends JFrame {
         return diceOutput;
     }
 
+    /**
+     * Starts the suggestion process by using a Get_Cards_Dialog window to get the required input
+     */
     public void createSuggestionDialog() {
         Get_Cards_Dialog dialog = new Get_Cards_Dialog(game);
         dialog.setContents(Cluedo.characters, "You are making a suggestion. Please choose a suspect:", false);
@@ -539,6 +547,12 @@ public class GUI extends JFrame {
         canSuggest();
     }
 
+    /**
+     * Creates a panel to let a player know if another player has a card that refutes their accusation
+     *
+     * @param player
+     * @param refuteCard
+     */
     public void createRefutePanel(Player player, Card refuteCard) {
         JDialog dialog = new JDialog(this, "Refuted", true);
         JPanel panel = (JPanel) dialog.getContentPane();
@@ -574,6 +588,12 @@ public class GUI extends JFrame {
 
     }
 
+    /**
+     * This creates a dialog window that allows a player to select which card to use to refute a suggestion
+     *
+     * @param player
+     * @param refutingCards
+     */
     public void createSelectRefutePanel(Player player, ArrayList<Card> refutingCards) {
         this.createConfirmPanel(player);
         JDialog dialog = new JDialog(this, "Select Card", true);
@@ -614,8 +634,13 @@ public class GUI extends JFrame {
 
     }
 
+    /**
+     * This creates a dialog to get a specific player to come to the computer to select a card
+     *
+     * @param player
+     */
     public void createConfirmPanel(Player player) {
-        JDialog dialog = new JDialog(this,  player.character + " (" + player.name + ")", true);
+        JDialog dialog = new JDialog(this, player.character + " (" + player.name + ")", true);
         JPanel panel = (JPanel) dialog.getContentPane();
         panel.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
         panel.setLayout(new BoxLayout(dialog.getContentPane(), BoxLayout.PAGE_AXIS));
@@ -650,6 +675,9 @@ public class GUI extends JFrame {
 
     }
 
+    /**
+     * This creates a panel to tell a player that there is no card that refutes their suggestion
+     */
     public void createNoRefutePanel() {
         JDialog dialog = new JDialog(this, "No Refute", true);
         JPanel panel = (JPanel) dialog.getContentPane();

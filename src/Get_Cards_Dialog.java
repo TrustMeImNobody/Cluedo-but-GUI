@@ -23,14 +23,18 @@ class Get_Cards_Dialog extends JDialog {
     }
 
     /**
+     * This method sets the initial contents of the dialog window
+     * It has action listeners on its radio buttons that recursively call itself
+     * it gets all the input required for accusing and suggesting then calls the relevant method
      *
-     * @param list
-     * @param string
+     * @param list   The list of options for the first choice
+     * @param string The first title
      * @param accuse if this is being used to get the cards for accusing or for suggesting
      */
+
     public void setContents(ArrayList<String> list, String string, boolean accuse) {
-        f = new JDialog(this,"Choose Suspects",true);
-        f.setSize(new Dimension(400,300));
+        f = new JDialog(this, "Choose Suspects", true);
+        f.setSize(new Dimension(400, 300));
         f.setResizable(false);
         JPanel newPanel = new JPanel();
         newPanel.setLayout(new BoxLayout(newPanel, BoxLayout.Y_AXIS));

@@ -6,7 +6,7 @@ public class Room {
 
     String name;
 
-    public Room (String n){
+    public Room(String n) {
         this.name = n;
         this.cells = new ArrayList<>();
     }
@@ -16,20 +16,21 @@ public class Room {
      * the following methods can add the cells that are part of the rooms
      * by adding each cell individually to the list of room cells or
      * by setting the full list of cells at once
-     * */
-    public void addCells(Cell c){
+     */
+    public void addCells(Cell c) {
         this.cells.add(c);
     }
 
-    public ArrayList<Cell> getCells(){
+    public ArrayList<Cell> getCells() {
         return cells;
     }
 
     /**
      * Adds the specified weapon to this room, each room has a designated cell for it
+     *
      * @param weapon
      */
-    public void addWeapon(String weapon){
+    public void addWeapon(String weapon) {
         switch (name) {
             case "Kitchen":
             case "Dining Room":
@@ -54,8 +55,11 @@ public class Room {
         this.weapon = weapon;
     }
 
-    public void deleteWeapon(){
-        for(Cell c:cells){
+    /**
+     * Delete the weapon from the current room by emptying the weapon fields of all the cells in the room
+     */
+    public void deleteWeapon() {
+        for (Cell c : cells) {
             c.weapon = "";
         }
     }

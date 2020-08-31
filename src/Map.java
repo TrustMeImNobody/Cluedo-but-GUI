@@ -10,7 +10,7 @@ public class Map extends JPanel {
     public final static int mapHeight = 500;
     public Cluedo game;
 
-    public Map(Cluedo g){
+    public Map(Cluedo g) {
         this.game = g;
     }
 
@@ -19,30 +19,37 @@ public class Map extends JPanel {
         return new Dimension(windowWidth, mapHeight);
     }
 
+
+    /**
+     * Draw the board on the panel by iterating through all the cells and setting their colour depending on the contents
+     *
+     * @param g
+     */
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         setBackground(Color.BLACK);
         ArrayList<ArrayList<Cell>> board = game.board.cells;
-        for(int row = 0; row < board.size(); row++){
-            for(int col = 0; col < board.get(row).size(); col++){
+        for (int row = 0; row < board.size(); row++) {
+            for (int col = 0; col < board.get(row).size(); col++) {
                 Cell current = board.get(row).get(col);
-                if(current.player != null){
+                if (current.player != null) {
                     Player player = current.player;
                     g.setColor(player.token.color);
-                } else if(current.type.equals("XXX")){
+                } else if (current.type.equals("XXX")) {
                     g.setColor(Color.black);
-                } else if(current.type.equals("   ")){
+                } else if (current.type.equals("   ")) {
                     g.setColor(Color.lightGray);
                 } else {
                     g.setColor(Color.black);
                 }
-                g.fillRect(30 + col * 18, row*18, 18, 18);
+                g.fillRect(30 + col * 18, row * 18, 18, 18);
                 g.setColor(Color.BLACK);
-                g.drawRect(30 + col * 18, row*18, 18, 18);
+                g.drawRect(30 + col * 18, row * 18, 18, 18);
 
             }
         }
-        for(int row = 0; row < board.size(); row++) {
+        //draw the weapons on the board
+        for (int row = 0; row < board.size(); row++) {
             for (int col = 0; col < board.get(row).size(); col++) {
                 Cell current = board.get(row).get(col);
                 g.setFont(g.getFont().deriveFont(10.0f));
@@ -50,6 +57,7 @@ public class Map extends JPanel {
             }
         }
 
+        //draw the room names on the board
         g.setColor(Color.red);
         g.setFont(g.getFont().deriveFont(12.0f));
         g.drawString("Kitchen", 53, 66);

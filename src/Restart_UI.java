@@ -4,17 +4,23 @@ import java.awt.*;
 public class Restart_UI extends JDialog {
     private JDialog f;
     private boolean reset = false;
-    public boolean restart(){
-        f = new JDialog(this,"Confirm Restart",true);
-        f.setSize(300,150);
+
+    /**
+     * Dialog to allow the user to confirm whether they want to restart the game
+     *
+     * @return a boolean to tell the rest of the game whether the user wants to restart or not
+     */
+    public boolean restart() {
+        f = new JDialog(this, "Confirm Restart", true);
+        f.setSize(300, 150);
         f.setResizable(false);
 
         JPanel main = new JPanel();
         main.setLayout(new BorderLayout());
 
-        main.add(new JLabel("Do you want to restart?"),BorderLayout.PAGE_START);
+        main.add(new JLabel("Do you want to restart?"), BorderLayout.PAGE_START);
         JPanel sub = new JPanel();
-        sub.setLayout(new GridLayout(3,2));
+        sub.setLayout(new GridLayout(3, 2));
         JButton yes = new JButton("Yes");
         yes.addActionListener(e -> {
             reset = true;
