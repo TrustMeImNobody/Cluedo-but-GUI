@@ -207,7 +207,7 @@ public class Cluedo {
                         return;
                     } else {
                         System.out.println("2");
-                        gui.createSelectRefutePanel(s);
+                        gui.createSelectRefutePanel(s, refutingCards);
                         return;
                     }
                 }
@@ -257,8 +257,6 @@ public class Cluedo {
      * @return boolean based on correctness of the accusation
      */
     public void accusation(String suspect, String weapon, String room) {
-        System.out.println("You're accusing " + suspect + " with the " + weapon + " in the " + room);
-        System.out.println("You're accusing " + winSus + " with the " + winWeapon + " in the " + winRoom);
         if (suspect.equals(winSus.name) && room.equals(winRoom.name) && weapon.equals(winWeapon.name)) {
             gui.createWinWindow(currentPlayer, suspect, weapon, room);//do win shit - spawn a window and close the game
         } else {

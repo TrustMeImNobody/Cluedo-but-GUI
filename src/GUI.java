@@ -22,9 +22,10 @@ public class GUI extends JFrame {
 
     /**
      * Constructor, creates the background frame and calls methods to build the rest of the GUI
+     *
      * @param g
      */
-    public GUI(Cluedo g){
+    public GUI(Cluedo g) {
         this.game = g;
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         this.setResizable(false); //don't let the window be resized so scaling can't break
@@ -63,14 +64,14 @@ public class GUI extends JFrame {
         this.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                if(restartClose){ //don't bother with the confirmation dialogue if resetting window
+                if (restartClose) { //don't bother with the confirmation dialogue if resetting window
                     f.setVisible(false);
                     return;
                 }
                 if (JOptionPane.showConfirmDialog(null,
                         "Are you sure you want to quit the game?", "Quit Game?",
                         JOptionPane.YES_NO_OPTION,
-                        JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION){
+                        JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
                     System.exit(0);
                 }
             }
@@ -99,7 +100,7 @@ public class GUI extends JFrame {
     /**
      * Creates the map by creating a new map object and adding it to a panel
      */
-    public JPanel createMapPanel(){
+    public JPanel createMapPanel() {
         JPanel panel = new JPanel();
         panel.setBackground(Color.black);
         panel.setSize(windowWidth, 458);
@@ -110,6 +111,7 @@ public class GUI extends JFrame {
 
     /**
      * Creates the left half of the lower panel, stores all the interact elements of the GUI
+     *
      * @return
      */
     public JPanel createControlPanel() {
@@ -127,6 +129,7 @@ public class GUI extends JFrame {
 
     /**
      * Creates the panel that all the buttons will be added to
+     *
      * @return
      */
     public JPanel createButtonPanel() {
@@ -148,7 +151,7 @@ public class GUI extends JFrame {
         diceOutput = new JLabel("Roll the dice");
         panel.add(diceOutput);
         suggest = new JButton("Suggest");
-        suggest.setBorder(BorderFactory.createLineBorder(Color.black,1));
+        suggest.setBorder(BorderFactory.createLineBorder(Color.black, 1));
         //Action listener for rolling the dice and displaying the roll. Also prevents the player from rerolling on their turn
         suggest.addActionListener(actionEvent -> {
             createSuggestionDialog();
@@ -161,11 +164,10 @@ public class GUI extends JFrame {
     /**
      * Only allow the player to suggest if they're in a room
      */
-    public void canSuggest(){
-        if(game.board.getPlayerRoom(game.currentPlayer)!=null&&!game.suggestedThisTurn){
+    public void canSuggest() {
+        if (game.board.getPlayerRoom(game.currentPlayer) != null && !game.suggestedThisTurn) {
             suggest.setEnabled(true);
-        }
-        else{
+        } else {
             suggest.setEnabled(false);
         }
     }
@@ -173,32 +175,33 @@ public class GUI extends JFrame {
     /**
      * Used by main class to tell player what they rolled
      */
-    public void updateDiceOutput(int i){
-        diceOutput.setText("You rolled "+i);
+    public void updateDiceOutput(int i) {
+        diceOutput.setText("You rolled " + i);
     }
 
     /**
      * Creates the panel for the accuse and end turn buttons
+     *
      * @return
      */
     public JPanel createAccusePanel() {
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(2, 1));
         JButton accuse = new JButton("Accuse");
-        accuse.setBorder(BorderFactory.createLineBorder(Color.black,1));
+        accuse.setBorder(BorderFactory.createLineBorder(Color.black, 1));
         //Action listener to call the accuse UI to trigger
         accuse.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 Get_Cards_Dialog dialog = new Get_Cards_Dialog(game);
-                dialog.setContents(Cluedo.characters, "You are making an accusation. Please choose a suspect:",true);
+                dialog.setContents(Cluedo.characters, "You are making an accusation. Please choose a suspect:", true);
 
             }
         });
         panel.add(accuse);
 
         JButton endTurn = new JButton("End Turn");
-        endTurn.setBorder(BorderFactory.createLineBorder(Color.black,1));
+        endTurn.setBorder(BorderFactory.createLineBorder(Color.black, 1));
         //Action listener to end the players turn
         endTurn.addActionListener(new ActionListener() {
             @Override
@@ -214,6 +217,7 @@ public class GUI extends JFrame {
     /**
      * Creates the bottom right panel of the GUI, can't be interacted with by the user
      * Displays information about the current player and their hand
+     *
      * @return
      */
     public JPanel createTextPanel() {
@@ -234,6 +238,7 @@ public class GUI extends JFrame {
 
     /**
      * Updates the bottom right panel of the GUI with the current player's information
+     *
      * @param p
      */
     public void updatePlayerDisplay(Player p) {
@@ -253,6 +258,7 @@ public class GUI extends JFrame {
 
     /**
      * Create the panel that will display the current players cards
+     *
      * @return
      */
     public JPanel createCardPanel() {
@@ -273,6 +279,7 @@ public class GUI extends JFrame {
     /**
      * Creates the dpad on the bottom right of the screen
      * The dpad uses a mouse listener to detect which direction the player wants to move in
+     *
      * @return
      */
     public JPanel createDPad() {
@@ -303,35 +310,37 @@ public class GUI extends JFrame {
             public void mouseClicked(MouseEvent mouseEvent) {
                 //boilerplate code
             }
+
             @Override
             public void mousePressed(MouseEvent mouseEvent) {
                 //boilerplate code
             }
+
             @Override
             public void mouseReleased(MouseEvent mouseEvent) {
-                if(game.diceTotal<=0){ //if the player no longer has any movement, tell them and don't let them move
+                if (game.diceTotal <= 0) { //if the player no longer has any movement, tell them and don't let them move
                     JOptionPane.showMessageDialog(null, "You have used up all of your movement");
                     return;
                 }
                 int x = mouseEvent.getX();
                 int y = mouseEvent.getY();
                 if (y < 45 && 100 < x && x < 230) {  //player clicked up label
-                    if(game.board.movePlayer(game.currentPlayer,'u')){
+                    if (game.board.movePlayer(game.currentPlayer, 'u')) {
                         diceAndMapUpdate();
                     }
                 }
                 if (x < 115 && 47 < y && y < 86) { //player clicked left label
-                    if(game.board.movePlayer(game.currentPlayer,'l')){
+                    if (game.board.movePlayer(game.currentPlayer, 'l')) {
                         diceAndMapUpdate();
                     }
                 }
                 if (230 < x && x < 340 && 47 < y && y < 87) {  //player clicked right label
-                    if(game.board.movePlayer(game.currentPlayer,'r')){
+                    if (game.board.movePlayer(game.currentPlayer, 'r')) {
                         diceAndMapUpdate();
                     }
                 }
                 if (y > 88 && 100 < x && x < 230) { //player clicked down label
-                    if(game.board.movePlayer(game.currentPlayer,'d')){
+                    if (game.board.movePlayer(game.currentPlayer, 'd')) {
                         diceAndMapUpdate();
                     }
                 }
@@ -354,15 +363,16 @@ public class GUI extends JFrame {
     /**
      * Stops the move method repeating the same 4 lines of code
      */
-    public void diceAndMapUpdate(){
+    public void diceAndMapUpdate() {
         game.diceTotal--;
-        diceOutput.setText("You have "+game.diceTotal+" movement remaining");
+        diceOutput.setText("You have " + game.diceTotal + " movement remaining");
         canSuggest();
         map.repaint();
     }
 
     /**
      * Method used for debugging player information display area
+     *
      * @return
      */
     public Player createTestPlayer() {
@@ -378,8 +388,8 @@ public class GUI extends JFrame {
     }
 
     public void createWinWindow(Player player, String suspect, String weapon, String room) {
-        JDialog dialog = new JDialog(this,"You Win",true);
-        dialog.setSize(new Dimension(500,150));
+        JDialog dialog = new JDialog(this, "You Win", true);
+        dialog.setSize(new Dimension(500, 150));
         dialog.getContentPane().setLayout(new BoxLayout(dialog.getContentPane(), BoxLayout.PAGE_AXIS));
         JPanel panel = (JPanel) dialog.getContentPane();
         panel.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
@@ -389,7 +399,7 @@ public class GUI extends JFrame {
         topPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
         String string = player.character + " (" + player.name + ")" + " wins! They deduced that it was "
                 + suspect + " with the " + weapon + " in the " + room + ". Thank you for playing Cluedo!";
-        JLabel title = new JLabel("<html><body><p style='width: 350px;'>"+string+"</p></body></html>");
+        JLabel title = new JLabel("<html><body><p style='width: 350px;'>" + string + "</p></body></html>");
         topPanel.add(title);
 
         panel.add(topPanel);
@@ -426,8 +436,8 @@ public class GUI extends JFrame {
     }
 
     public void createOutWindow(Player player, String suspect, String weapon, String room) {
-        JDialog dialog = new JDialog(this,"You're Out",true);
-        dialog.setSize(new Dimension(500,150));
+        JDialog dialog = new JDialog(this, "You're Out", true);
+        dialog.setSize(new Dimension(500, 150));
         dialog.getContentPane().setLayout(new BoxLayout(dialog.getContentPane(), BoxLayout.PAGE_AXIS));
         dialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
@@ -439,7 +449,7 @@ public class GUI extends JFrame {
         topPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
         String string = player.character + " (" + player.name + ")" + " is out! Their accusation that it it was "
                 + suspect + " with the " + weapon + " in the " + room + " was incorrect!";
-        JLabel title = new JLabel("<html><body><p style='width: 350px;'>"+string+"</p></body></html>");
+        JLabel title = new JLabel("<html><body><p style='width: 350px;'>" + string + "</p></body></html>");
         topPanel.add(title);
 
         panel.add(topPanel);
@@ -468,8 +478,8 @@ public class GUI extends JFrame {
      * could probably be merged with createWinWindow
      */
     public void createLoseWindow() {
-        JDialog dialog = new JDialog(this,"Game Over",true);
-        dialog.setSize(new Dimension(500,150));
+        JDialog dialog = new JDialog(this, "Game Over", true);
+        dialog.setSize(new Dimension(500, 150));
         dialog.getContentPane().setLayout(new BoxLayout(dialog.getContentPane(), BoxLayout.PAGE_AXIS));
         JPanel panel = (JPanel) dialog.getContentPane();
         panel.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
@@ -477,7 +487,7 @@ public class GUI extends JFrame {
 
         JPanel topPanel = new JPanel();
         topPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        String string ="All players have been eliminated. Thank you for playing Cluedo!";
+        String string = "All players have been eliminated. Thank you for playing Cluedo!";
         JLabel title = new JLabel(string);
         topPanel.add(title);
 
@@ -515,31 +525,135 @@ public class GUI extends JFrame {
 
     /**
      * Getter for diceOutput - needed to end the turn
+     *
      * @return
      */
-    public JLabel getDiceOutput(){
+    public JLabel getDiceOutput() {
         return diceOutput;
     }
 
-    public void createSuggestionDialog(){
+    public void createSuggestionDialog() {
         Get_Cards_Dialog dialog = new Get_Cards_Dialog(game);
-        dialog.setContents(Cluedo.characters, "You are making a suggestion. Please choose a suspect:",false);
+        dialog.setContents(Cluedo.characters, "You are making a suggestion. Please choose a suspect:", false);
         game.suggestedThisTurn = true;
         canSuggest();
     }
 
-    public void createRefutePanel(Player player, Card refuteCard){
+    public void createRefutePanel(Player player, Card refuteCard) {
+        JDialog dialog = new JDialog(this, "Refuted", true);
+        JPanel panel = (JPanel) dialog.getContentPane();
+        panel.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
+        panel.setLayout(new BoxLayout(dialog.getContentPane(), BoxLayout.PAGE_AXIS));
+
+        JPanel topPanel = new JPanel();
+        topPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        dialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        JLabel title = new JLabel(player.character + " (" + player.name + ") has the card " + refuteCard.name + ", which refutes your suggestion.");
+        topPanel.add(title);
+        panel.add(topPanel);
+
+        panel.add(Box.createRigidArea(new Dimension(0, 10)));
+
+        JPanel bottomPanel = new JPanel();
+        bottomPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        JButton button1 = new JButton("Continue");
+        button1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                dialog.dispose();
+            }
+        });
+        bottomPanel.add(button1);
+
+        panel.add(bottomPanel);
+
+        dialog.pack();
+        dialog.setVisible(true);
 
     }
 
-    public void createSelectRefutePanel(Player player){
+    public void createSelectRefutePanel(Player player, ArrayList<Card> refutingCards) {
+        this.createConfirmPanel(player);
+        JDialog dialog = new JDialog(this, "Select Card", true);
+        JPanel panel = (JPanel) dialog.getContentPane();
+        panel.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
+        panel.setLayout(new BoxLayout(dialog.getContentPane(), BoxLayout.PAGE_AXIS));
 
+        JPanel topPanel = new JPanel();
+        topPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        dialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        JLabel title = new JLabel(player.character + " (" + player.name + ") you have multiple cards which could refute this suggestion. Please choose one:");
+        topPanel.add(title);
+        panel.add(topPanel);
+
+        panel.add(Box.createRigidArea(new Dimension(0, 10)));
+
+        JPanel bottomPanel = new JPanel();
+        bottomPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        for (Card card : refutingCards) {
+            JRadioButton rButton = new JRadioButton(card.name);
+            rButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent actionEvent) {
+                    createRefutePanel(player, card);
+                    dialog.setVisible(false);
+                }
+            });
+        }
+
+        panel.add(bottomPanel);
+
+        dialog.pack();
+        dialog.setVisible(true);
+
+
+    }
+
+    public void createConfirmPanel(Player player) {
+        JDialog dialog = new JDialog(this, player.name, true);
+        JPanel panel = (JPanel) dialog.getContentPane();
+        panel.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
+        panel.setLayout(new BoxLayout(dialog.getContentPane(), BoxLayout.PAGE_AXIS));
+
+        JPanel topPanel = new JPanel();
+        topPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        dialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        JLabel title = new JLabel("Please have " + player.character + " (" + player.name + ") come to the computer as they have to choose a card.");
+        topPanel.add(title);
+        panel.add(topPanel);
+
+        panel.add(Box.createRigidArea(new Dimension(0, 10)));
+
+        JPanel bottomPanel = new JPanel();
+        bottomPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        JButton button1 = new JButton("Continue");
+        button1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                dialog.dispose();
+            }
+        });
+        bottomPanel.add(button1);
+
+        panel.add(bottomPanel);
+
+        dialog.pack();
+        dialog.setVisible(true);
 
         createRefutePanel(player, null);
     }
 
-    public void createNoRefutePanel(){
-        JDialog dialog = new JDialog(this,"No Refute",true);
+    public void createNoRefutePanel() {
+        JDialog dialog = new JDialog(this, "No Refute", true);
         JPanel panel = (JPanel) dialog.getContentPane();
         panel.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
         panel.setLayout(new BoxLayout(dialog.getContentPane(), BoxLayout.PAGE_AXIS));
