@@ -549,7 +549,6 @@ public class GUI extends JFrame {
         topPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         dialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
         JLabel title = new JLabel(player.character + " (" + player.name + ") has the card " + refuteCard.name + ", which refutes your suggestion.");
         topPanel.add(title);
         panel.add(topPanel);
@@ -601,10 +600,11 @@ public class GUI extends JFrame {
             rButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent actionEvent) {
-                    createRefutePanel(player, card);
                     dialog.setVisible(false);
+                    createRefutePanel(player, card);
                 }
             });
+            bottomPanel.add(rButton);
         }
 
         panel.add(bottomPanel);
@@ -612,11 +612,10 @@ public class GUI extends JFrame {
         dialog.pack();
         dialog.setVisible(true);
 
-
     }
 
     public void createConfirmPanel(Player player) {
-        JDialog dialog = new JDialog(this, player.name, true);
+        JDialog dialog = new JDialog(this,  player.character + " (" + player.name + ")", true);
         JPanel panel = (JPanel) dialog.getContentPane();
         panel.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
         panel.setLayout(new BoxLayout(dialog.getContentPane(), BoxLayout.PAGE_AXIS));
@@ -649,7 +648,6 @@ public class GUI extends JFrame {
         dialog.pack();
         dialog.setVisible(true);
 
-        createRefutePanel(player, null);
     }
 
     public void createNoRefutePanel() {
